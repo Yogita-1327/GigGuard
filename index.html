@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GigGuard — AI Income Protection</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Figtree:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════
+   GIGGUARD · COMPLETE APP STYLES
+   Two views: #view-register  |  #view-dashboard
+═══════════════════════════════════════════════════════ */
+
+:root {
+  --bg:        #060a14;
+  --surface:   #0d1525;
+  --card:      rgba(10,16,32,0.82);
+  --border:    rgba(255,255,255,0.07);
+  --violet:    #7c3aed;
+  --indigo:    #4338ca;
+  --cyan:      #06b6d4;
+  --emerald:   #10b981;
+  --rose:      #f43f5e;
+  --amber:     #f59e0b;
+  --t1:        #f0f4ff;
+  --t2:        #94a3b8;
+  --t3:        #475569;
+  --accent:    #a78bfa;
+  --grad:      linear-gradient(135deg,#4338ca,#7c3aed,#9333ea);
+  --grad-text: linear-gradient(135deg,#818cf8,#a78bfa,#c084fc,#e879f9);
+  --ff-d: 'Barlow Condensed',sans-serif;
+  --ff-b: 'Figtree',sans-serif;
+  --ff-m: 'JetBrains Mono',monospace;
+  --r:12px; --rl:20px; --rxl:28px;
+  --shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--ff-b);background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+input,select,button,textarea{font-family:inherit}
+::selection{background:rgba(124,58,237,.4)}
+img{display:block;max-width:100%}
+
+/* ── BG SYSTEM ── */
+.bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(99,74,255,.15) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(ellipse 75% 65% at 50% 40%,black 20%,transparent 100%)}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);will-change:transform}
+.orb-1{width:700px;height:600px;background:radial-gradient(ellipse,rgba(67,56,202,.2),transparent 70%);top:-200px;left:-200px;animation:orb-a 22s ease-in-out infinite alternate}
+.orb-2{width:550px;height:550px;background:radial-gradient(ellipse,rgba(124,58,237,.16),transparent 70%);bottom:-150px;right:-150px;animation:orb-a 17s ease-in-out infinite alternate-reverse}
+.orb-3{width:400px;height:400px;background:radial-gradient(ellipse,rgba(6,182,212,.1),transparent 70%);top:40%;left:55%;animation:orb-a 26s ease-in-out infinite alternate}
+.scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px)}
+@keyframes orb-a{from{transform:translate(0,0) scale(1)}to{transform:translate(50px,35px) scale(1.08)}}
+
+/* ── VIEWS ── */
+.view{display:none;position:relative;z-index:2;min-height:100vh}
+.view.active{display:block}
+
+/* ════════════════════════════════════════
+   NAVBAR (shared)
+════════════════════════════════════════ */
+.nav{position:fixed;top:0;left:0;right:0;height:60px;z-index:99;display:flex;align-items:center;padding:0 40px;gap:20px;background:rgba(6,10,20,.75);backdrop-filter:blur(22px) saturate(1.8);border-bottom:1px solid var(--border);animation:fadeDown .6s ease both}
+.nav-brand{display:flex;align-items:center;gap:10px;font-family:var(--ff-d);font-size:20px;font-weight:800;letter-spacing:.3px}
+.nav-brand .shield{width:32px;height:32px;border-radius:9px;background:var(--grad);display:grid;place-items:center;color:#fff;box-shadow:0 4px 18px rgba(124,58,237,.4);flex-shrink:0}
+.nav-brand strong{color:var(--accent)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.pill{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.3px}
+.pill-live{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);color:var(--emerald);display:flex;align-items:center;gap:6px}
+.pill-dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);animation:blink 2s infinite}
+.pill-beta{background:rgba(124,58,237,.15);border:1px solid rgba(167,139,250,.25);color:var(--accent)}
+.nav-dash-btn{padding:7px 18px;border-radius:var(--r);background:rgba(124,58,237,.15);border:1px solid rgba(167,139,250,.25);font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;transition:all .2s}
+.nav-dash-btn:hover{background:rgba(124,58,237,.28);color:#fff}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+
+/* ════════════════════════════════════════
+   REGISTER VIEW
+════════════════════════════════════════ */
+.reg-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1300px;margin:0 auto;padding:80px 48px 80px;min-height:100vh}
+
+/* Left copy */
+.reg-copy{animation:slideRight .9s .1s cubic-bezier(.22,1,.36,1) both}
+.copy-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 16px;border-radius:100px;background:rgba(124,58,237,.12);border:1px solid rgba(167,139,250,.2);font-size:12px;font-weight:600;color:var(--accent);margin-bottom:28px}
+.hero-h1{font-family:var(--ff-d);line-height:.96;letter-spacing:-1px;margin-bottom:22px}
+.h1-sm{display:block;font-size:clamp(44px,5vw,70px);font-weight:700;color:var(--t2);animation:lineUp .85s .15s cubic-bezier(.22,1,.36,1) both}
+.h1-lg{display:block;font-size:clamp(64px,7vw,100px);font-weight:900;color:var(--t1);animation:lineUp .85s .28s cubic-bezier(.22,1,.36,1) both}
+.h1-grad{display:block;font-size:clamp(64px,7vw,100px);font-weight:900;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:lineUp .85s .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes lineUp{from{opacity:0;transform:translateY(55%)}to{opacity:1;transform:none}}
+.hero-p{font-size:16px;line-height:1.75;color:var(--t2);max-width:460px;margin-bottom:28px;animation:fadeUp .9s .6s ease both}
+.check-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;animation:fadeUp .9s .72s ease both}
+.check{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--t2)}
+.check svg{color:var(--emerald);flex-shrink:0}
+.metrics-row{display:flex;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:28px;animation:fadeUp .9s .85s ease both}
+.met{flex:1;padding:18px 20px;text-align:center}
+.met-num{font-family:var(--ff-d);font-size:26px;font-weight:800;line-height:1;margin-bottom:4px}
+.met-num sup{font-size:14px;color:var(--accent);font-weight:700}
+.met-lbl{font-size:11px;color:var(--t3);font-weight:500}
+.met-div{width:1px;background:var(--border)}
+.trust{display:flex;align-items:center;gap:12px;flex-wrap:wrap;animation:fadeUp .9s 1s ease both}
+.trust-lbl{font-size:11px;color:var(--t3)}
+.trust-logos{display:flex;gap:6px;flex-wrap:wrap}
+.trust-logos span{padding:4px 11px;border-radius:100px;background:rgba(255,255,255,.03);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t3)}
+
+/* Right form card */
+.reg-card-wrap{position:relative;animation:cardUp 1s .2s cubic-bezier(.22,1,.36,1) both}
+@keyframes cardUp{from{opacity:0;transform:translateY(44px) scale(.96)}to{opacity:1;transform:none}}
+.card-glow-bg{position:absolute;inset:-60px;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(124,58,237,.22),transparent 70%);filter:blur(40px);border-radius:50%;animation:glowPulse 5s ease-in-out infinite alternate;pointer-events:none}
+@keyframes glowPulse{from{opacity:.7;transform:scale(1)}to{opacity:1;transform:scale(1.05)}}
+.form-card{position:relative;background:var(--card);backdrop-filter:blur(36px) saturate(1.7);border:1px solid var(--border);border-radius:var(--rxl);padding:36px 36px 28px;box-shadow:var(--shadow);overflow:hidden}
+.form-card::before{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.7),rgba(124,58,237,.9),rgba(167,139,250,.7),transparent)}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.card-head-l{display:flex;align-items:center;gap:11px}
+.card-ico{width:36px;height:36px;border-radius:10px;background:var(--grad);display:grid;place-items:center;color:#fff;box-shadow:0 4px 18px rgba(124,58,237,.4);flex-shrink:0}
+.card-title{font-size:15px;font-weight:700;line-height:1.2}
+.card-sub{font-size:12px;color:var(--t3);margin-top:2px}
+.card-free{padding:5px 13px;border-radius:100px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);font-size:11px;font-weight:600;color:var(--emerald)}
+
+/* Fields */
+.fld{display:flex;flex-direction:column;gap:6px;margin-bottom:15px}
+.fld:last-of-type{margin-bottom:0}
+.fld-row{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:15px}
+.fld-row .fld{margin-bottom:0}
+label{font-size:12px;font-weight:600;color:var(--t2);letter-spacing:.3px}
+.inp-shell{position:relative;display:flex;align-items:center}
+.inp-ico{position:absolute;left:13px;color:var(--t3);display:grid;place-items:center;pointer-events:none;z-index:1;transition:color .2s;font-style:normal;font-family:var(--ff-b);font-size:14px;font-weight:600;line-height:1}
+.inp-shell input,.inp-shell select{width:100%;padding:12px 14px 12px 40px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--r);color:var(--t1);font-size:14px;font-weight:400;outline:none;appearance:none;-webkit-appearance:none;transition:border-color .22s,background .22s,box-shadow .22s}
+.inp-shell input::placeholder{color:var(--t3)}
+.inp-shell select option{background:#0f172a;color:var(--t1)}
+.inp-shell input:focus,.inp-shell select:focus{border-color:rgba(124,58,237,.6);background:rgba(124,58,237,.07);box-shadow:0 0 0 3px rgba(124,58,237,.14),inset 0 0 18px rgba(124,58,237,.06)}
+.inp-shell:focus-within .inp-ico{color:var(--accent)}
+/* select arrow */
+.inp-shell.sel::after{content:'';position:absolute;right:13px;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--t3);pointer-events:none;transition:border-color .2s}
+.inp-shell.sel:focus-within::after{border-top-color:var(--accent)}
+.inp-shell.err input,.inp-shell.err select{border-color:rgba(244,63,94,.55);box-shadow:0 0 0 3px rgba(244,63,94,.1)}
+
+/* Submit */
+.sub-btn{width:100%;margin-top:20px;padding:15px 24px;border:none;border-radius:var(--rl);background:var(--grad);color:#fff;font-size:15px;font-weight:700;cursor:pointer;position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s;box-shadow:0 8px 30px rgba(124,58,237,.38),0 0 0 1px rgba(167,139,250,.14)}
+.sub-btn:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(124,58,237,.55),0 0 0 1px rgba(167,139,250,.22)}
+.sub-btn:active{transform:none}
+.btn-face,.btn-spin{display:flex;align-items:center;justify-content:center;gap:9px;transition:opacity .22s,transform .22s}
+.btn-spin{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:9px;opacity:0;transform:translateY(8px)}
+.sub-btn.loading .btn-face{opacity:0;transform:translateY(-8px)}
+.sub-btn.loading .btn-spin{opacity:1;transform:none}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.shine{position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.15) 50%,transparent 80%);transform:skewX(-15deg);pointer-events:none}
+.sub-btn:hover .shine{animation:shineSweep .55s ease forwards}
+@keyframes shineSweep{to{left:160%}}
+.card-note{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:16px;font-size:11px;color:var(--t3);text-align:center}
+
+/* Float chips */
+.chip{position:absolute;display:flex;align-items:center;gap:10px;padding:10px 15px;background:rgba(8,13,26,.92);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:var(--rl);box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:2;pointer-events:none}
+.chip-top{top:-22px;right:-28px;animation:chipFloat 4s ease-in-out infinite alternate}
+.chip-bot{bottom:20px;left:-38px;animation:chipFloat 5s ease-in-out infinite alternate-reverse}
+@keyframes chipFloat{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+.chip-ico{font-size:20px}
+.chip-v{font-family:var(--ff-d);font-size:16px;font-weight:800;line-height:1;margin-bottom:2px}
+.chip-l{font-size:10px;color:var(--t3);font-weight:500}
+
+/* ════════════════════════════════════════
+   LOADING SCREEN
+════════════════════════════════════════ */
+#loadingScreen{position:fixed;inset:0;z-index:500;display:none;place-items:center;background:rgba(6,10,20,.97);backdrop-filter:blur(24px)}
+#loadingScreen.show{display:grid}
+.ls-box{text-align:center;max-width:460px;width:90%;animation:popIn .42s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:none}}
+.ls-rings{position:relative;width:90px;height:90px;margin:0 auto 32px}
+.ls-ring{position:absolute;inset:0;border-radius:50%;border:2.5px solid transparent;animation:rspin 2s linear infinite}
+.ls-r1{border-top-color:var(--indigo);animation-duration:2.2s}
+.ls-r2{inset:13px;border-top-color:var(--violet);animation-duration:1.6s;animation-direction:reverse}
+.ls-r3{inset:26px;border-top-color:var(--cyan);animation-duration:1.1s}
+.ls-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--accent);display:grid;place-items:center}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ls-title{font-family:var(--ff-d);font-size:24px;font-weight:700;margin-bottom:26px;letter-spacing:-.3px}
+.ls-steps{list-style:none;text-align:left;display:flex;flex-direction:column;gap:11px;margin-bottom:26px}
+.ls-step{display:flex;align-items:center;gap:11px;font-size:13px;color:var(--t3);opacity:0;transition:color .3s}
+.ls-step::before{content:'';width:8px;height:8px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;transition:all .3s}
+.ls-step.vis{opacity:1;animation:stepIn .4s ease}
+.ls-step.done{color:var(--emerald)}
+.ls-step.done::before{background:var(--emerald);border-color:var(--emerald)}
+.ls-step.vis:not(.done)::before{border-color:var(--accent);animation:blink 1s infinite}
+@keyframes stepIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.ls-track{height:3px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;margin-bottom:14px}
+.ls-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--indigo),var(--violet),var(--cyan));border-radius:100px;animation:fillBar 3.4s ease-out forwards}
+@keyframes fillBar{to{width:100%}}
+.ls-note{font-size:11px;color:var(--t3);font-family:var(--ff-m)}
+
+/* ════════════════════════════════════════
+   DASHBOARD VIEW
+════════════════════════════════════════ */
+#view-dashboard{padding-top:60px}
+.dash-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
+
+/* Sidebar */
+.sidebar{background:rgba(9,14,26,.8);border-right:1px solid var(--border);backdrop-filter:blur(16px);padding:28px 0;display:flex;flex-direction:column;position:sticky;top:60px;height:calc(100vh - 60px)}
+.sb-logo{display:flex;align-items:center;gap:9px;padding:0 20px 24px;border-bottom:1px solid var(--border);font-family:var(--ff-d);font-size:18px;font-weight:800}
+.sb-logo .shield{width:28px;height:28px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;flex-shrink:0}
+.sb-logo strong{color:var(--accent)}
+.sb-nav{padding:18px 10px;flex:1;display:flex;flex-direction:column;gap:3px}
+.sb-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--r);font-size:13px;font-weight:400;color:var(--t2);cursor:pointer;transition:all .18s;border:none;background:none;width:100%;text-align:left}
+.sb-item svg{flex-shrink:0;opacity:.7}
+.sb-item:hover{background:rgba(255,255,255,.05);color:var(--t1)}
+.sb-item.active{background:rgba(124,58,237,.15);color:var(--accent);font-weight:600}
+.sb-item.active svg{opacity:1}
+.sb-status{margin:auto 14px 12px;padding:9px 13px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.18);border-radius:var(--r);display:flex;align-items:center;gap:8px;font-size:12px;color:var(--emerald)}
+.sb-back{margin:4px 14px;padding:9px 13px;font-size:12px;color:var(--t3);cursor:pointer;border:none;background:none;text-align:left;transition:color .2s}
+.sb-back:hover{color:var(--t1)}
+
+/* Dash main */
+.dash-main{padding:32px 40px 60px;overflow-y:auto;display:flex;flex-direction:column;gap:26px}
+
+/* Topbar */
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.tb-greeting{font-family:var(--ff-d);font-size:28px;font-weight:800;line-height:1.1}
+.tb-greeting span{color:var(--accent)}
+.tb-date{font-size:13px;color:var(--t3);margin-top:4px}
+.tb-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tb-tag{padding:7px 15px;border-radius:100px;font-size:12px;font-weight:600;border:1px solid}
+.tb-city{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--t2)}
+.tb-platform{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--t2)}
+.tb-alert-high{background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.28);color:var(--rose);animation:blink 2s infinite}
+.tb-alert-med{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.28);color:var(--amber)}
+.tb-alert-low{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.28);color:var(--emerald)}
+
+/* Risk banner */
+.risk-banner{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px 28px;backdrop-filter:blur(14px)}
+.rb-block{display:flex;flex-direction:column;gap:5px}
+.rb-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);font-weight:600}
+.rb-value{font-family:var(--ff-d);font-size:22px;font-weight:800}
+.rb-high{color:var(--rose)}
+.rb-medium{color:var(--amber)}
+.rb-low{color:var(--emerald)}
+.rb-mid{display:flex;flex-direction:column;gap:7px}
+.ds-row{display:flex;align-items:center;gap:12px}
+.ds-track{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}
+.ds-fill{height:100%;border-radius:100px;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.ds-fill-high{background:linear-gradient(90deg,#f59e0b,#f43f5e)}
+.ds-fill-med{background:linear-gradient(90deg,#fbbf24,#f59e0b)}
+.ds-fill-low{background:linear-gradient(90deg,#34d399,#10b981)}
+.ds-num{font-family:var(--ff-d);font-size:24px;font-weight:800;min-width:48px;text-align:right}
+.protect-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);color:var(--emerald)}
+
+/* Stat cards */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px;backdrop-filter:blur(14px);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;animation:fadeUp .5s ease both}
+.sc:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.sc-prem::before{background:linear-gradient(90deg,var(--indigo),var(--violet))}
+.sc-cov::before{background:linear-gradient(90deg,var(--cyan),var(--indigo))}
+.sc-loss::before{background:linear-gradient(90deg,var(--amber),var(--rose))}
+.sc-pay::before{background:linear-gradient(90deg,var(--emerald),var(--cyan))}
+.sc-ico{font-size:24px;margin-bottom:12px}
+.sc-label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);font-weight:600;margin-bottom:5px}
+.sc-val{font-family:var(--ff-d);font-size:30px;font-weight:800;line-height:1;margin-bottom:4px}
+.sc-sub{font-size:11px;color:var(--t3)}
+.sc-badge{position:absolute;top:18px;right:18px;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700}
+.sc-badge-blue{background:rgba(79,124,255,.15);color:#818cf8}
+.sc-badge-red{background:rgba(244,63,94,.12);color:var(--rose)}
+.sc-badge-green{background:rgba(16,185,129,.12);color:var(--emerald)}
+.val-red{color:var(--rose)}
+
+/* Bottom grid */
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+
+/* AI Suggestion */
+.sug-card{background:rgba(79,70,229,.07);border:1px solid rgba(79,70,229,.18);border-radius:var(--rl);padding:26px;backdrop-filter:blur(14px)}
+.sug-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sug-tag{padding:5px 13px;background:rgba(79,70,229,.2);border:1px solid rgba(124,58,237,.3);border-radius:100px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.6px}
+.sug-refresh{font-size:12px;color:var(--t3);cursor:pointer;transition:color .2s;border:none;background:none;padding:0}
+.sug-refresh:hover{color:var(--accent)}
+.sug-text{font-size:15px;line-height:1.65;color:var(--t1);margin-bottom:18px}
+.sug-tips{display:flex;flex-direction:column;gap:9px}
+.sug-tip{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--t2)}
+.sug-tip span:first-child{font-size:15px}
+
+/* Simulator */
+.sim-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:26px;backdrop-filter:blur(14px)}
+.sim-head h3{font-family:var(--ff-d);font-size:18px;font-weight:700;margin-bottom:4px}
+.sim-head p{font-size:13px;color:var(--t3);margin-bottom:18px}
+.sim-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.sim-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 10px;border-radius:var(--r);border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--t1);cursor:pointer;transition:all .2s;font-size:12px;font-weight:500}
+.sim-btn:hover{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.3);transform:translateY(-2px)}
+.sim-btn-ico{font-size:22px}
+.sim-btn-lbl{font-size:11px;color:var(--t3)}
+.sim-timeline{display:flex;flex-direction:column;gap:9px}
+.sim-step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t3);opacity:.4;transition:all .3s}
+.sim-step.active{opacity:1;color:var(--t1)}
+.sim-step.done{opacity:1;color:var(--emerald)}
+.step-dot{width:8px;height:8px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;transition:all .3s}
+.sim-step.done .step-dot{background:var(--emerald);border-color:var(--emerald)}
+.sim-step.active .step-dot{border-color:var(--accent);animation:blink 1s infinite}
+
+/* Chart card */
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:26px 30px;backdrop-filter:blur(14px)}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.chart-head h3{font-family:var(--ff-d);font-size:18px;font-weight:700}
+.chart-legend{display:flex;align-items:center;gap:18px;font-size:12px;color:var(--t2)}
+.leg-dot{display:inline-block;width:26px;height:3px;border-radius:100px;margin-right:5px;vertical-align:middle}
+canvas{max-width:100%;display:block}
+
+/* Payout popup */
+.payout-overlay{position:fixed;inset:0;z-index:600;display:none;place-items:center;background:rgba(6,10,20,.9);backdrop-filter:blur(14px)}
+.payout-overlay.show{display:grid}
+.payout-box{background:rgba(10,16,32,.98);border:1px solid rgba(16,185,129,.3);border-radius:var(--rxl);padding:48px 52px;text-align:center;max-width:420px;width:90%;box-shadow:0 0 80px rgba(16,185,129,.12);animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
+.po-ico{font-size:54px;margin-bottom:14px;animation:bounceIn .6s ease}
+@keyframes bounceIn{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.po-title{font-family:var(--ff-d);font-size:28px;font-weight:800;color:var(--emerald);margin-bottom:6px}
+.po-sub{font-size:14px;color:var(--t3);margin-bottom:18px}
+.po-amount{font-family:var(--ff-d);font-size:56px;font-weight:900;background:linear-gradient(135deg,var(--emerald),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.po-note{font-size:12px;color:var(--t3);margin-bottom:22px}
+.po-steps{display:flex;flex-direction:column;gap:7px;margin-bottom:26px;text-align:left}
+.po-step{padding:8px 13px;background:rgba(16,185,129,.07);border-radius:8px;font-size:13px;color:var(--emerald)}
+.po-close{width:100%;padding:13px;border-radius:var(--r);border:1px solid rgba(16,185,129,.28);background:rgba(16,185,129,.1);color:var(--emerald);font-family:var(--ff-d);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
+.po-close:hover{background:rgba(16,185,129,.2)}
+
+/* ── TAB PANEL SYSTEM ── */
+.tab-panel{display:none;animation:fadeUp .35s ease both}
+.tab-panel.active{display:block}
+.tab-header{margin-bottom:28px}
+.tab-title{font-family:var(--ff-d);font-size:32px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+.tab-desc{font-size:14px;color:var(--t2);line-height:1.6}
+
+/* ── HOW IT WORKS ── */
+.hiw-steps{display:flex;flex-direction:column;gap:0;margin-bottom:36px}
+.hiw-step{display:grid;grid-template-columns:52px 56px 1fr;gap:20px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:28px 28px;backdrop-filter:blur(14px)}
+.hiw-connector{width:2px;height:24px;background:linear-gradient(180deg,rgba(124,58,237,.4),rgba(124,58,237,.1));margin-left:25px}
+.hiw-num{font-family:var(--ff-d);font-size:13px;font-weight:700;color:var(--t3);letter-spacing:1px;padding-top:4px}
+.hiw-icon{font-size:32px;line-height:1}
+.hiw-body h3{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--t1)}
+.hiw-body p{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:14px}
+.hiw-tags{display:flex;gap:7px;flex-wrap:wrap}
+.hiw-tags span{padding:4px 11px;border-radius:100px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);font-size:11px;font-weight:600;color:var(--accent)}
+.hiw-faq-title{font-family:var(--ff-d);font-size:22px;font-weight:700;margin-bottom:16px}
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .2s}
+.faq-item:hover{border-color:rgba(124,58,237,.3)}
+.faq-item.open{border-color:rgba(124,58,237,.4)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;font-size:14px;font-weight:600;color:var(--t1)}
+.faq-arrow{color:var(--t3);transition:transform .25s;font-size:16px}
+.faq-item.open .faq-arrow{transform:rotate(180deg);color:var(--accent)}
+.faq-a{display:none;padding:0 20px 18px;font-size:13px;color:var(--t2);line-height:1.7}
+.faq-item.open .faq-a{display:block}
+
+/* ── COVERAGE ── */
+.cov-summary{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(67,56,202,.15),rgba(124,58,237,.1));border:1px solid rgba(124,58,237,.25);border-radius:var(--rl);padding:28px 32px;margin-bottom:24px}
+.cov-policy-id{font-family:var(--ff-m);font-size:11px;color:var(--t3);margin-bottom:6px;letter-spacing:.5px}
+.cov-sum-name{font-family:var(--ff-d);font-size:26px;font-weight:800;margin-bottom:4px}
+.cov-sum-meta{font-size:13px;color:var(--t2);margin-bottom:14px}
+.cov-status-row{display:flex;align-items:center;gap:12px}
+.cov-active-badge{padding:5px 13px;border-radius:100px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);font-size:12px;font-weight:600;color:var(--emerald)}
+.cov-renew{font-size:12px;color:var(--t3)}
+.cov-big-num{font-family:var(--ff-d);font-size:48px;font-weight:900;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;text-align:right}
+.cov-big-lbl{font-size:12px;color:var(--t3);text-align:right;margin-top:4px}
+.cov-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.cov-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px;backdrop-filter:blur(14px);position:relative;overflow:hidden}
+.cov-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.cov-card-1::before{background:linear-gradient(90deg,var(--indigo),var(--cyan))}
+.cov-card-2::before{background:linear-gradient(90deg,var(--t3),#94a3b8)}
+.cov-card-3::before{background:linear-gradient(90deg,var(--rose),var(--amber))}
+.cov-card-4::before{background:linear-gradient(90deg,var(--amber),#f97316)}
+.cov-card-icon{font-size:26px;margin-bottom:10px}
+.cov-card-title{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.cov-card-val{font-family:var(--ff-d);font-size:24px;font-weight:800;color:var(--emerald);margin-bottom:4px}
+.cov-card-sub{font-size:11px;color:var(--t3);margin-bottom:12px}
+.cov-card-bar{height:4px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}
+.cov-bar-fill{height:100%;background:var(--grad);border-radius:100px;transition:width 1s cubic-bezier(.22,1,.36,1)}
+.cov-table-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:24px;backdrop-filter:blur(14px);margin-bottom:20px}
+.cov-table-title{font-family:var(--ff-d);font-size:17px;font-weight:700;margin-bottom:16px}
+.cov-table{display:flex;flex-direction:column;gap:0}
+.cov-row{display:grid;grid-template-columns:2fr 1fr 2fr 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--t2);align-items:center}
+.cov-row:last-child{border-bottom:none}
+.cov-row-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);padding-bottom:10px}
+.cov-row-total{font-weight:700;color:var(--t1);border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:14px}
+.cov-val-green{color:var(--emerald);font-weight:700}
+.cov-val-red{color:var(--rose);font-weight:700}
+.not-covered{background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.15);border-radius:var(--rl);padding:22px}
+.nc-title{font-size:14px;font-weight:700;color:var(--rose);margin-bottom:14px}
+.nc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.nc-item{font-size:13px;color:var(--t2);padding:8px 0}
+
+/* ── PAYOUT TAB ── */
+.pay-calc-card{display:grid;grid-template-columns:1fr 1fr;gap:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:28px;backdrop-filter:blur(14px);margin-bottom:22px}
+.pay-calc-label{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.pay-calc-desc{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:18px}
+.pay-slider-wrap{margin-bottom:16px}
+.pay-slider-lbl{font-size:13px;color:var(--t2);display:block;margin-bottom:10px}
+.pay-slider-lbl strong{color:var(--t1)}
+input[type=range]{width:100%;appearance:none;height:5px;background:rgba(255,255,255,.1);border-radius:100px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:var(--grad);cursor:pointer;box-shadow:0 0 10px rgba(124,58,237,.5)}
+.pay-calc-risk-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pay-risk-lbl{font-size:12px;color:var(--t3);margin-right:2px}
+.pay-risk-btn{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:600;color:var(--t2);border:1px solid var(--border);cursor:pointer;transition:all .2s;background:none}
+.pay-risk-btn.active{background:rgba(124,58,237,.2);border-color:rgba(124,58,237,.4);color:var(--accent)}
+.pay-calc-result{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px;height:100%;justify-content:center}
+.pcr-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--t2)}
+.pcr-row strong{font-size:15px;color:var(--t1)}
+.pcr-red{color:var(--rose)!important}
+.pcr-green{color:var(--emerald)!important;font-size:24px!important}
+.pcr-big span{font-size:15px;font-weight:600;color:var(--t1)}
+.pcr-div{height:1px;background:rgba(255,255,255,.08);margin:4px 0}
+.pcr-note{font-size:11px;color:var(--t3);text-align:center;margin-top:4px}
+.claim-trigger-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:28px;backdrop-filter:blur(14px);margin-bottom:22px}
+.ct-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px}
+.ct-title{font-size:17px;font-weight:700;margin-bottom:4px}
+.ct-sub{font-size:13px;color:var(--t2)}
+.ct-eligibility{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:100px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);font-size:12px;font-weight:600;color:var(--emerald);white-space:nowrap;flex-shrink:0}
+.elig-dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);animation:blink 2s infinite}
+.ct-types{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.ct-type{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 18px;border-radius:var(--r);border:1px solid var(--border);background:rgba(255,255,255,.03);cursor:pointer;transition:all .2s;min-width:90px}
+.ct-type:hover{background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.28)}
+.ct-type.active{background:rgba(124,58,237,.18);border-color:rgba(124,58,237,.45)}
+.ct-type-ico{font-size:22px}
+.ct-type-lbl{font-size:11px;font-weight:600;color:var(--t2)}
+.ct-progress{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:18px}
+.ctp-step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t3);padding:6px 0;opacity:.4;transition:all .3s}
+.ctp-step.active{opacity:1;color:var(--t1)}
+.ctp-step.done{opacity:1;color:var(--emerald)}
+.ctp-dot{width:8px;height:8px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;transition:all .3s}
+.ctp-step.done .ctp-dot{background:var(--emerald);border-color:var(--emerald)}
+.ctp-step.active .ctp-dot{border-color:var(--accent);animation:blink 1s infinite}
+.ct-submit-btn{width:100%;padding:15px;border-radius:var(--rl);border:none;background:var(--grad);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:all .22s;box-shadow:0 8px 28px rgba(124,58,237,.35);display:flex;align-items:center;justify-content:center;gap:9px}
+.ct-submit-btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(124,58,237,.5)}
+.ct-submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.payout-history-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:24px;backdrop-filter:blur(14px);margin-bottom:22px}
+.ph-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.ph-title{font-size:16px;font-weight:700}
+.ph-total{font-size:13px;color:var(--t2)}
+.ph-total strong{color:var(--emerald)}
+.ph-table{display:flex;flex-direction:column}
+.ph-row{display:grid;grid-template-columns:1.2fr 1.5fr 1fr 1fr 1fr;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--t2);align-items:center}
+.ph-head-row{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3)}
+.ph-empty{padding:32px;text-align:center;color:var(--t3);font-size:13px}
+.ph-status-ok{padding:3px 10px;border-radius:100px;background:rgba(16,185,129,.12);color:var(--emerald);font-size:11px;font-weight:600;display:inline-block}
+.payout-explainer{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:26px;backdrop-filter:blur(14px)}
+.pe-title{font-family:var(--ff-d);font-size:20px;font-weight:700;margin-bottom:20px}
+.pe-steps{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pe-step{display:flex;gap:14px;align-items:flex-start}
+.pe-step-num{width:32px;height:32px;border-radius:8px;background:var(--grad);display:grid;place-items:center;font-family:var(--ff-d);font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+.pe-step-body strong{display:block;font-size:14px;margin-bottom:5px;color:var(--t1)}
+.pe-step-body p{font-size:13px;color:var(--t2);line-height:1.6}
+
+/* ── CLAIM HISTORY TAB ── */
+.history-summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.hs-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px;text-align:center;backdrop-filter:blur(14px)}
+.hs-val{font-family:var(--ff-d);font-size:32px;font-weight:800;line-height:1;margin-bottom:6px}
+.hs-lbl{font-size:12px;color:var(--t3);font-weight:500}
+.hs-green{color:var(--emerald)}
+.hs-blue{color:var(--accent)}
+.hs-amber{color:var(--amber)}
+.full-history-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:24px;backdrop-filter:blur(14px)}
+.fh-head{display:grid;grid-template-columns:2fr 1.8fr 1fr 1fr;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3)}
+.fh-row{display:grid;grid-template-columns:2fr 1.8fr 1fr 1fr;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:var(--t2);align-items:center}
+
+/* ── MY POLICY TAB ── */
+.policy-hero-card{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(67,56,202,.22),rgba(124,58,237,.15),rgba(6,182,212,.08));border:1px solid rgba(124,58,237,.3);border-radius:var(--rl);padding:32px 36px;margin-bottom:24px;position:relative;overflow:hidden}
+.policy-hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--indigo),var(--violet),var(--cyan))}
+.phc-tag{font-family:var(--ff-m);font-size:10px;letter-spacing:1.5px;color:var(--accent);margin-bottom:10px}
+.phc-name{font-family:var(--ff-d);font-size:30px;font-weight:800;margin-bottom:4px}
+.phc-meta{font-size:13px;color:var(--t2);margin-bottom:8px}
+.phc-id{font-family:var(--ff-m);font-size:12px;color:var(--t3);margin-bottom:16px}
+.phc-dates{display:flex;gap:20px;font-size:12px;color:var(--t2)}
+.phc-dates strong{color:var(--t1)}
+.phc-right{text-align:center}
+.phc-shield-wrap{color:var(--accent);margin-bottom:8px;filter:drop-shadow(0 0 20px rgba(124,58,237,.5))}
+.phc-status{font-family:var(--ff-d);font-size:13px;font-weight:700;letter-spacing:2px;color:var(--emerald);padding:5px 14px;border-radius:100px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25)}
+.policy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.policy-detail-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;backdrop-filter:blur(14px)}
+.pdc-label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);font-weight:600;margin-bottom:8px}
+.pdc-value{font-family:var(--ff-d);font-size:24px;font-weight:800;margin-bottom:4px}
+.pdc-note{font-size:11px;color:var(--t3)}
+.pdc-green{color:var(--emerald)}
+.pdc-amber{color:var(--amber)}
+.policy-section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:24px;backdrop-filter:blur(14px);margin-bottom:20px}
+.psc-title{font-size:15px;font-weight:700;margin-bottom:16px}
+.psc-table{display:flex;flex-direction:column}
+.psc-row{display:grid;grid-template-columns:2fr 2fr 1.5fr 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--t2);align-items:center}
+.psc-row:last-child{border-bottom:none}
+.psc-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3)}
+.psc-row span:last-child{color:var(--emerald);font-weight:700}
+.terms-list{display:flex;flex-direction:column;gap:12px}
+.term-item{display:flex;gap:12px;font-size:13px;color:var(--t2);line-height:1.65}
+.term-num{font-weight:700;color:var(--accent);flex-shrink:0;width:18px}
+.policy-actions{display:flex;gap:12px;margin-top:4px}
+.pol-btn{padding:13px 28px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.pol-btn-primary{background:var(--grad);border:none;color:#fff;box-shadow:0 6px 24px rgba(124,58,237,.35)}
+.pol-btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(124,58,237,.5)}
+.pol-btn-secondary{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--t2)}
+.pol-btn-secondary:hover{background:rgba(255,255,255,.08);color:var(--t1)}
+/* ── ZONE MAP TAB ── */
+.zone-city-bar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:20px 26px;margin-bottom:22px;backdrop-filter:blur(14px);flex-wrap:wrap;gap:14px}
+.zcb-city{font-family:var(--ff-d);font-size:22px;font-weight:800;margin-bottom:3px}
+.zcb-meta{font-size:12px;color:var(--t3)}
+.zcb-stats{display:flex;gap:18px;flex-wrap:wrap}
+.zcb-stat{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:6px}
+.zcb-stat strong{color:var(--t1)}
+.zcb-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.zcb-dot.red{background:var(--rose)}.zcb-dot.amber{background:var(--amber)}.zcb-dot.green{background:var(--emerald)}
+.zone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.zone-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:18px;backdrop-filter:blur(14px);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.zone-card:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.3)}
+.zone-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.zone-card.risk-high::before{background:var(--rose)}.zone-card.risk-med::before{background:var(--amber)}.zone-card.risk-low::before{background:var(--emerald)}
+.zone-card.zone-yours{border-color:rgba(124,58,237,.4);box-shadow:0 0 0 1px rgba(124,58,237,.15)}
+.zc-name{font-size:15px;font-weight:700;margin-bottom:4px}
+.zc-risk{font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:12px}
+.zc-risk.high{color:var(--rose)}.zc-risk.med{color:var(--amber)}.zc-risk.low{color:var(--emerald)}
+.zc-stats{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.zc-stat-row{display:flex;justify-content:space-between;font-size:11px;color:var(--t3)}
+.zc-stat-row strong{color:var(--t2)}
+.zc-yours-tag{position:absolute;top:14px;right:14px;padding:2px 8px;border-radius:100px;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.3);font-size:10px;font-weight:700;color:var(--accent)}
+.map-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px;backdrop-filter:blur(14px);margin-bottom:22px}
+.map-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.map-title{font-size:15px;font-weight:700}
+.map-legend{display:flex;gap:14px;font-size:12px;color:var(--t2);flex-wrap:wrap}
+.ml-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.ml-dot.red{background:var(--rose)}.ml-dot.amber{background:var(--amber)}.ml-dot.green{background:var(--emerald)}.ml-dot.blue{background:var(--accent)}
+.map-visual{position:relative;height:280px;background:rgba(255,255,255,.02);border-radius:var(--r);border:1px solid rgba(255,255,255,.05);overflow:hidden}
+.map-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.map-zone-blob{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;transition:transform .2s;border:2px solid}
+.map-zone-blob:hover{transform:translate(-50%,-50%) scale(1.1)!important}
+.map-footer{display:flex;justify-content:space-between;margin-top:12px;font-size:11px;color:var(--t3);flex-wrap:wrap;gap:6px}
+.weather-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.weather-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:20px;text-align:center;backdrop-filter:blur(14px)}
+.wc-icon{font-size:26px;margin-bottom:8px}.wc-label{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);font-weight:600;margin-bottom:6px}
+.wc-val{font-family:var(--ff-d);font-size:26px;font-weight:800;margin-bottom:10px}
+.wc-bar{height:4px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}
+.wc-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--rose),var(--amber));transition:width 1s cubic-bezier(.22,1,.36,1)}
+.wc-fill-amber{background:linear-gradient(90deg,var(--amber),#fbbf24)}.wc-fill-green{background:linear-gradient(90deg,var(--emerald),var(--cyan))}
+.route-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px;backdrop-filter:blur(14px)}
+.route-title{font-size:15px;font-weight:700;margin-bottom:16px}
+.route-list{display:flex;flex-direction:column;gap:10px}
+.route-item{display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.03);border-radius:var(--r);border:1px solid rgba(255,255,255,.05)}
+.ri-ico{font-size:22px;flex-shrink:0}.ri-body{flex:1}
+.ri-name{font-size:14px;font-weight:600;margin-bottom:3px}.ri-detail{font-size:12px;color:var(--t3)}
+.ri-tag{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700;white-space:nowrap;border:1px solid}
+.ri-tag.safe{background:rgba(16,185,129,.12);color:var(--emerald);border-color:rgba(16,185,129,.2)}
+.ri-tag.caution{background:rgba(245,158,11,.12);color:var(--amber);border-color:rgba(245,158,11,.2)}
+.ri-tag.avoid{background:rgba(244,63,94,.12);color:var(--rose);border-color:rgba(244,63,94,.2)}
+/* ── SETTINGS TAB ── */
+.settings-section{margin-bottom:28px}
+.ss-title{font-size:12px;font-weight:700;color:var(--t2);letter-spacing:.3px;margin-bottom:12px;text-transform:uppercase}
+.settings-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:24px;backdrop-filter:blur(14px)}
+.profile-row{display:flex;align-items:center;gap:16px;margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.07)}
+.profile-avatar{width:52px;height:52px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-family:var(--ff-d);font-size:24px;font-weight:800;color:#fff;flex-shrink:0}
+.profile-info{flex:1}
+.profile-name{font-size:18px;font-weight:700;margin-bottom:3px}
+.profile-meta{font-size:13px;color:var(--t3)}
+.edit-btn{padding:8px 18px;border-radius:var(--r);border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.edit-btn:hover{background:rgba(255,255,255,.08);color:var(--t1)}
+.sett-fields{display:flex;flex-direction:column}
+.sf-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px}
+.sf-row:last-child{border-bottom:none}
+.sf-lbl{color:var(--t3);font-weight:500}.sf-val{color:var(--t1);font-weight:600}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05);gap:20px}
+.toggle-row:last-child{border-bottom:none}
+.tg-label{font-size:14px;font-weight:600;margin-bottom:3px}.tg-sub{font-size:12px;color:var(--t3)}
+.toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0;cursor:pointer}
+.toggle-switch input{opacity:0;width:0;height:0}
+.ts-slider{position:absolute;inset:0;background:rgba(255,255,255,.12);border-radius:100px;transition:.3s;border:1px solid rgba(255,255,255,.1)}
+.ts-slider::before{content:'';position:absolute;width:18px;height:18px;left:2px;top:50%;transform:translateY(-50%);background:var(--t2);border-radius:50%;transition:.3s}
+.toggle-switch input:checked~.ts-slider{background:rgba(124,58,237,.5);border-color:rgba(124,58,237,.4)}
+.toggle-switch input:checked~.ts-slider::before{transform:translateY(-50%) translateX(20px);background:var(--accent)}
+.sett-status-ok{padding:4px 12px;border-radius:100px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.22);font-size:12px;font-weight:600;color:var(--emerald)}
+.danger-card{border-color:rgba(244,63,94,.2);background:rgba(244,63,94,.04)}
+.danger-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(244,63,94,.1);gap:20px}
+.danger-row:last-child{border-bottom:none}
+.danger-btn{padding:9px 18px;border-radius:var(--r);background:rgba(244,63,94,.15);border:1px solid rgba(244,63,94,.3);color:var(--rose);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.danger-btn:hover{background:rgba(244,63,94,.25)}
+.danger-btn-soft{padding:9px 18px;border-radius:var(--r);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--amber);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.settings-toast{position:fixed;bottom:32px;right:32px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:var(--emerald);padding:14px 22px;border-radius:var(--r);font-size:14px;font-weight:600;backdrop-filter:blur(12px);opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+.settings-toast.show{opacity:1}
+
+@media(max-width:900px){
+  .cov-grid{grid-template-columns:1fr 1fr}
+  .pay-calc-card{grid-template-columns:1fr}
+  .pe-steps{grid-template-columns:1fr}
+  .history-summary-row{grid-template-columns:1fr 1fr}
+  .nc-grid{grid-template-columns:1fr 1fr}
+  .hiw-step{grid-template-columns:40px 44px 1fr;gap:14px;padding:20px}
+  .cov-row,.ph-row{grid-template-columns:1fr 1fr}
+  .cov-row span:nth-child(3),.cov-row span:nth-child(4),.ph-row span:nth-child(3),.ph-row span:nth-child(5){display:none}
+  .fh-head,.fh-row{grid-template-columns:2fr 1.5fr 1fr}
+  .fh-head span:last-child,.fh-row span:last-child{display:none}
+}
+@media(max-width:600px){
+  .ct-types{gap:7px}
+  .ct-type{min-width:70px;padding:12px 10px}
+  .history-summary-row{grid-template-columns:1fr 1fr}
+  .cov-summary{flex-direction:column;gap:16px}
+  .cov-big-num{text-align:left}
+  .cov-big-lbl{text-align:left}
+}
+{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+
+/* ── Responsive ── */
+@media(max-width:1100px){
+  .reg-layout{grid-template-columns:1fr;gap:40px;padding:44px 32px 60px;text-align:center}
+  .hero-p,.check-row,.trust,.metrics-row{margin-inline:auto}
+  .check-row,.trust{justify-content:center}
+  .reg-card-wrap{max-width:540px;margin:0 auto;width:100%}
+  .chip{display:none}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+  .dash-layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .dash-main{padding:20px}
+  .bottom-grid{grid-template-columns:1fr}
+  .risk-banner{grid-template-columns:1fr;gap:16px}
+}
+@media(max-width:768px){
+  .nav{padding:0 20px}
+  .reg-layout{padding:32px 20px 60px;gap:32px}
+  .form-card{padding:22px 18px 20px}
+  .fld-row{grid-template-columns:1fr}
+  .h1-sm{font-size:38px}
+  .h1-lg,.h1-grad{font-size:52px}
+  .stat-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .metrics-row{display:grid;grid-template-columns:1fr 1fr 1fr}
+  .met-div{display:none}
+  .stat-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── BACKGROUND ── -->
+<div class="bg-wrap">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="scanlines"></div>
+</div>
+
+<!-- ── LOADING SCREEN ── -->
+<div id="loadingScreen">
+  <div class="ls-box">
+    <div class="ls-rings">
+      <div class="ls-ring ls-r1"></div>
+      <div class="ls-ring ls-r2"></div>
+      <div class="ls-ring ls-r3"></div>
+      <div class="ls-core">
+        <svg width="22" height="22" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg>
+      </div>
+    </div>
+    <h2 class="ls-title">Analyzing your risk pattern</h2>
+    <ul class="ls-steps" id="lsSteps">
+      <li class="ls-step" data-d="400">Fetching weather disruption data for your city</li>
+      <li class="ls-step" data-d="1100">Modeling historical income risk patterns</li>
+      <li class="ls-step" data-d="1850">Calculating optimal premium &amp; coverage</li>
+      <li class="ls-step" data-d="2600">Generating AI-powered recommendations</li>
+    </ul>
+    <div class="ls-track"><div class="ls-bar"></div></div>
+    <p class="ls-note">GigGuard AI Engine v2.1</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     VIEW 1: REGISTER
+════════════════════════════════════════ -->
+<div class="view active" id="view-register">
+
+  <!-- Navbar -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="shield">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg>
+      </div>
+      Gig<strong>Guard</strong>
+    </div>
+    <div class="nav-right">
+      <span class="pill pill-live"><span class="pill-dot"></span>AI Live</span>
+      <span class="pill pill-beta">Beta</span>
+    </div>
+  </nav>
+
+  <div class="reg-layout">
+
+    <!-- LEFT -->
+    <div class="reg-copy">
+      <div class="copy-tag">✦ For Swiggy · Zomato · Blinkit Riders</div>
+      <h1 class="hero-h1">
+        <span class="h1-sm">Your</span>
+        <span class="h1-lg">Income.</span>
+        <span class="h1-grad">Protected.</span>
+      </h1>
+      <p class="hero-p">Real-time AI predicts weather disruptions before they hit your earnings. GigGuard detects, calculates, and credits your UPI automatically — zero paperwork.</p>
+      <div class="check-row">
+        <div class="check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Zero paperwork</div>
+        <div class="check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Instant UPI payout</div>
+        <div class="check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>From ₹30 / week</div>
+      </div>
+      <div class="metrics-row">
+        <div class="met"><div class="met-num">12,400<sup>+</sup></div><div class="met-lbl">Riders Protected</div></div>
+        <div class="met-div"></div>
+        <div class="met"><div class="met-num">₹2.1<sup>Cr</sup></div><div class="met-lbl">Claims Paid</div></div>
+        <div class="met-div"></div>
+        <div class="met"><div class="met-num">98.4<sup>%</sup></div><div class="met-lbl">Accuracy</div></div>
+      </div>
+      <div class="trust">
+        <span class="trust-lbl">Trusted by riders on</span>
+        <div class="trust-logos"><span>Swiggy</span><span>Zomato</span><span>Blinkit</span><span>Dunzo</span><span>Zepto</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: FORM -->
+    <div class="reg-card-wrap">
+      <div class="card-glow-bg"></div>
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-l">
+            <div class="card-ico"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg></div>
+            <div><div class="card-title">Risk Analysis</div><div class="card-sub">Get your free AI-powered quote</div></div>
+          </div>
+          <span class="card-free">Free · 60s</span>
+        </div>
+
+        <form id="regForm" novalidate>
+          <div class="fld">
+            <label for="rName">Full Name</label>
+            <div class="inp-shell">
+              <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+              <input type="text" id="rName" placeholder="Rajan Kumar" required autocomplete="off"/>
+            </div>
+          </div>
+
+          <div class="fld-row">
+            <div class="fld">
+              <label for="rCity">City</label>
+              <div class="inp-shell sel">
+                <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></span>
+                <select id="rCity" required><option value="">Select city</option><option>Chennai</option><option>Mumbai</option><option>Delhi</option><option>Bengaluru</option><option>Hyderabad</option><option>Kolkata</option><option>Pune</option><option>Ahmedabad</option></select>
+              </div>
+            </div>
+            <div class="fld">
+              <label for="rPlatform">Platform</label>
+              <div class="inp-shell sel">
+                <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+                <select id="rPlatform" required><option value="">Select app</option><option>Swiggy</option><option>Zomato</option><option>Blinkit</option><option>Dunzo</option><option>Zepto</option><option>Multiple Platforms</option></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="fld-row">
+            <div class="fld">
+              <label for="rEarnings">Daily Earnings (₹)</label>
+              <div class="inp-shell">
+                <span class="inp-ico">₹</span>
+                <input type="number" id="rEarnings" placeholder="800" min="100" max="9999" required/>
+              </div>
+            </div>
+            <div class="fld">
+              <label for="rHours">Hours / Day</label>
+              <div class="inp-shell">
+                <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                <input type="number" id="rHours" placeholder="10" min="1" max="20" required/>
+              </div>
+            </div>
+          </div>
+
+          <div class="fld">
+            <label for="rZone">Preferred Work Zone</label>
+            <div class="inp-shell sel">
+              <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+              <select id="rZone" required><option value="">Select zone</option><option>Zone A – City Centre</option><option>Zone B – Suburbs</option><option>Zone C – Industrial</option><option>Zone D – Residential</option><option>Mixed Zones</option></select>
+            </div>
+          </div>
+
+          <button type="submit" class="sub-btn" id="subBtn">
+            <span class="btn-face"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg>Analyze My Risk</span>
+            <span class="btn-spin"><span class="spinner"></span>Analyzing Risk…</span>
+            <div class="shine"></div>
+          </button>
+        </form>
+
+        <p class="card-note"><svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg> 256-bit encrypted · IRDAI Sandbox Partner · Data never sold</p>
+      </div>
+
+      <div class="chip chip-top"><span class="chip-ico">⚡</span><div><div class="chip-v">85/100</div><div class="chip-l">Risk Score</div></div></div>
+      <div class="chip chip-bot"><span class="chip-ico">💸</span><div><div class="chip-v">₹560</div><div class="chip-l">Last Payout</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     VIEW 2: DASHBOARD
+════════════════════════════════════════ -->
+<div class="view" id="view-dashboard">
+
+  <!-- Navbar -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="shield"><svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg></div>
+      Gig<strong>Guard</strong>
+    </div>
+    <div class="nav-right">
+      <span class="pill pill-live"><span class="pill-dot"></span>AI Live</span>
+      <span class="pill pill-beta">Beta</span>
+      <button class="nav-dash-btn" onclick="showView('register')">← Re-register</button>
+    </div>
+  </nav>
+
+  <div class="dash-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="shield"><svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg></div>Gig<strong>Guard</strong></div>
+      <nav class="sb-nav">
+        <button class="sb-item active" data-tab="tab-dashboard" onclick="switchTab('tab-dashboard',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</button>
+        <button class="sb-item" data-tab="tab-howitworks" onclick="switchTab('tab-howitworks',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>How It Works</button>
+        <button class="sb-item" data-tab="tab-coverage" onclick="switchTab('tab-coverage',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Coverage</button>
+        <button class="sb-item" data-tab="tab-payout" onclick="switchTab('tab-payout',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Payout</button>
+        <button class="sb-item" data-tab="tab-history" onclick="switchTab('tab-history',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Claim History</button>
+        <button class="sb-item" data-tab="tab-policy" onclick="switchTab('tab-policy',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>My Policy</button>
+        <button class="sb-item" data-tab="tab-zonemap" onclick="switchTab('tab-zonemap',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Zone Map</button>
+        <button class="sb-item" data-tab="tab-settings" onclick="switchTab('tab-settings',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Settings</button>
+      </nav>
+      <div class="sb-status"><span class="pill-dot"></span>AI Engine Active</div>
+      <button class="sb-back" onclick="showView('register')">← Re-register</button>
+    </aside>
+
+    <!-- Main -->
+    <main class="dash-main">
+
+      <!-- ══ TAB: DASHBOARD ══ -->
+      <div class="tab-panel active" id="tab-dashboard">
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <div>
+          <div class="tb-greeting"><span id="dGreeting">Good afternoon</span>, <span id="dName">Rider</span> 👋</div>
+          <div class="tb-date" id="dDate"></div>
+        </div>
+        <div class="tb-right">
+          <span class="tb-tag tb-city" id="dCity">📍 Chennai</span>
+          <span class="tb-tag tb-platform" id="dPlatform">🚴 Swiggy</span>
+          <span class="tb-tag" id="dAlert">⚠️ High Risk Day</span>
+        </div>
+      </div>
+
+      <!-- Risk Banner -->
+      <div class="risk-banner" id="riskBanner">
+        <div class="rb-block">
+          <div class="rb-label">Risk Level</div>
+          <div class="rb-value" id="riskVal">— —</div>
+        </div>
+        <div class="rb-mid">
+          <div class="rb-label">Disruption Score</div>
+          <div class="ds-row">
+            <div class="ds-track"><div class="ds-fill" id="dsBar" style="width:0%"></div></div>
+            <div class="ds-num" id="dsNum">0</div>
+          </div>
+        </div>
+        <div class="rb-block" style="text-align:right">
+          <div class="rb-label">Protection Status</div>
+          <div class="protect-badge">🟢 ACTIVE</div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-grid">
+        <div class="sc sc-prem">
+          <div class="sc-ico">📋</div>
+          <div class="sc-label">Weekly Premium</div>
+          <div class="sc-val" id="sPremium">—</div>
+          <div class="sc-sub">Auto-deducted Monday</div>
+          <span class="sc-badge sc-badge-blue">Paid</span>
+        </div>
+        <div class="sc sc-cov">
+          <div class="sc-ico">🛡️</div>
+          <div class="sc-label">Coverage Amount</div>
+          <div class="sc-val" id="sCoverage">—</div>
+          <div class="sc-sub">Daily income protected</div>
+          <span class="sc-badge sc-badge-blue">Active</span>
+        </div>
+        <div class="sc sc-loss">
+          <div class="sc-ico">📉</div>
+          <div class="sc-label">Predicted Loss Today</div>
+          <div class="sc-val val-red" id="sLoss">—</div>
+          <div class="sc-sub">Weather-adjusted forecast</div>
+          <span class="sc-badge sc-badge-red">Alert</span>
+        </div>
+        <div class="sc sc-pay">
+          <div class="sc-ico">💸</div>
+          <div class="sc-label">Auto-Payout Trigger</div>
+          <div class="sc-val" id="sPayout">—</div>
+          <div class="sc-sub">70% of coverage on disruption</div>
+          <span class="sc-badge sc-badge-green">Ready</span>
+        </div>
+      </div>
+
+      <!-- Bottom Grid -->
+      <div class="bottom-grid">
+        <!-- AI Suggestion -->
+        <div class="sug-card">
+          <div class="sug-head">
+            <span class="sug-tag">⚡ AI INSIGHT</span>
+            <button class="sug-refresh" onclick="rotateSuggestion()">↻ Refresh</button>
+          </div>
+          <p class="sug-text" id="sugText">Loading recommendation…</p>
+          <div class="sug-tips" id="sugTips">
+            <div class="sug-tip"><span>🕐</span><span>Best hours: 7 PM – 10 PM</span></div>
+            <div class="sug-tip"><span>📍</span><span>Recommended: Zone B – Suburbs</span></div>
+            <div class="sug-tip"><span>💡</span><span>Surge likely post-rain in restaurant zones</span></div>
+          </div>
+        </div>
+
+        <!-- Simulator -->
+        <div class="sim-card">
+          <div class="sim-head">
+            <h3>Disruption Simulator</h3>
+            <p>Test how GigGuard responds to real-world events</p>
+          </div>
+          <div class="sim-btns">
+            <button class="sim-btn" onclick="runSim('rain')"><span class="sim-btn-ico">🌧️</span><span class="sim-btn-lbl">Heavy Rain</span></button>
+            <button class="sim-btn" onclick="runSim('smog')"><span class="sim-btn-ico">🌫️</span><span class="sim-btn-lbl">Heavy Smog</span></button>
+            <button class="sim-btn" onclick="runSim('strike')"><span class="sim-btn-ico">🚫</span><span class="sim-btn-lbl">Area Strike</span></button>
+            <button class="sim-btn" onclick="runSim('flood')"><span class="sim-btn-ico">🌊</span><span class="sim-btn-lbl">Flash Flood</span></button>
+          </div>
+          <div class="sim-timeline" id="simTimeline">
+            <div class="sim-step" id="ss0"><span class="step-dot"></span><span>Select a disruption to simulate</span></div>
+            <div class="sim-step" id="ss1"><span class="step-dot"></span><span></span></div>
+            <div class="sim-step" id="ss2"><span class="step-dot"></span><span></span></div>
+            <div class="sim-step" id="ss3"><span class="step-dot"></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-card">
+        <div class="chart-head">
+          <h3>Weekly Earnings vs Protection</h3>
+          <div class="chart-legend">
+            <span class="leg-dot" style="background:#4338ca"></span>Actual
+            <span class="leg-dot" style="background:#10b981"></span>Protected
+            <span class="leg-dot" style="background:#f43f5e"></span>Risk Day
+          </div>
+        </div>
+        <canvas id="earningsChart" height="200"></canvas>
+      </div>
+
+      </div><!-- /tab-dashboard -->
+
+      <!-- ══ TAB: HOW IT WORKS ══ -->
+      <div class="tab-panel" id="tab-howitworks">
+        <div class="tab-header">
+          <h2 class="tab-title">How GigGuard Works</h2>
+          <p class="tab-desc">Four intelligent steps — from disruption detection to money in your account.</p>
+        </div>
+        <div class="hiw-steps">
+          <div class="hiw-step">
+            <div class="hiw-num">01</div>
+            <div class="hiw-icon">🛰️</div>
+            <div class="hiw-body">
+              <h3>Real-Time Disruption Detection</h3>
+              <p>GigGuard's AI engine monitors hyperlocal weather feeds, traffic incidents, area blockages, and AQI levels every 15 minutes across your registered zone. The moment a disruption threshold is crossed, the system flags a potential income impact event.</p>
+              <div class="hiw-tags"><span>Weather API</span><span>Traffic Feed</span><span>AQI Monitor</span><span>Zone Alerts</span></div>
+            </div>
+          </div>
+          <div class="hiw-connector"></div>
+          <div class="hiw-step">
+            <div class="hiw-num">02</div>
+            <div class="hiw-icon">🧠</div>
+            <div class="hiw-body">
+              <h3>AI Income Impact Assessment</h3>
+              <p>Our parametric model computes your expected income drop using your platform history, city rain index, zone density data, and time-of-day surge patterns. No manual claim filing — the system calculates exactly how much you've lost.</p>
+              <div class="hiw-tags"><span>Parametric Model</span><span>Historical Data</span><span>Surge Patterns</span></div>
+            </div>
+          </div>
+          <div class="hiw-connector"></div>
+          <div class="hiw-step">
+            <div class="hiw-num">03</div>
+            <div class="hiw-icon">✅</div>
+            <div class="hiw-body">
+              <h3>Automatic Claim Approval</h3>
+              <p>Unlike traditional insurance, there are zero forms, zero waiting periods, and zero human review for parametric triggers. Once the disruption score exceeds your policy threshold, your claim is auto-approved within 90 seconds.</p>
+              <div class="hiw-tags"><span>Zero Paperwork</span><span>90-sec Approval</span><span>Auto-triggered</span></div>
+            </div>
+          </div>
+          <div class="hiw-connector"></div>
+          <div class="hiw-step">
+            <div class="hiw-num">04</div>
+            <div class="hiw-icon">💸</div>
+            <div class="hiw-body">
+              <h3>Instant UPI Payout</h3>
+              <p>Your payout — 70% of your declared daily coverage — is credited directly to your registered UPI ID within 2 minutes of approval. No bank delays, no processing windows. Money when you need it most.</p>
+              <div class="hiw-tags"><span>UPI Instant</span><span>&lt; 2 Minutes</span><span>70% Coverage</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="hiw-faq-title">Frequently Asked Questions</div>
+        <div class="faq-list">
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Who is eligible for GigGuard?</span><span class="faq-arrow">▾</span></div>
+            <div class="faq-a">Any active delivery partner on Swiggy, Zomato, Blinkit, Dunzo, Zepto, or BigBasket operating in our covered cities. You need at least 30 deliveries in the past month and an active UPI-linked bank account.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>How is my premium calculated?</span><span class="faq-arrow">▾</span></div>
+            <div class="faq-a">Your weekly premium is a percentage of your declared daily earnings — 3.75% for High Risk cities, 2.5% for Medium Risk, and 1.25% for Low Risk. Risk category is determined by your city's disruption index, updated monthly.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>What counts as a disruption?</span><span class="faq-arrow">▾</span></div>
+            <div class="faq-a">Qualifying disruptions: heavy rainfall (above 25mm/hr), flash floods, AQI above 300, area road blockages, declared public strikes, extreme heat above 44°C. Must be verified by two independent data sources.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Can I claim multiple times in a week?</span><span class="faq-arrow">▾</span></div>
+            <div class="faq-a">Yes. Your policy covers up to 3 disruption events per week, with a maximum total payout of 2× your daily coverage per week. Each event must be a separately verified disruption of at least 2 hours.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Is my data safe?</span><span class="faq-arrow">▾</span></div>
+            <div class="faq-a">All data is encrypted with 256-bit AES. We are an IRDAI Sandbox Partner compliant with DPDP Act 2023. Your earnings data is never sold and only used for risk calculation and claim processing.</div>
+          </div>
+        </div>
+      </div><!-- /tab-howitworks -->
+
+      <!-- ══ TAB: COVERAGE ══ -->
+      <div class="tab-panel" id="tab-coverage">
+        <div class="tab-header">
+          <h2 class="tab-title">Your Coverage Details</h2>
+          <p class="tab-desc">Everything your policy covers — and exactly how much you're protected for.</p>
+        </div>
+        <div class="cov-summary" id="covSummary">
+          <div class="cov-sum-left">
+            <div class="cov-policy-id">Policy <span id="covPolicyId">GG-XXXXXX</span></div>
+            <div class="cov-sum-name" id="covName">—</div>
+            <div class="cov-sum-meta" id="covMeta">— · — · —</div>
+            <div class="cov-status-row">
+              <span class="cov-active-badge">🟢 Active Policy</span>
+              <span class="cov-renew">Renews Monday</span>
+            </div>
+          </div>
+          <div class="cov-sum-right">
+            <div class="cov-big-num" id="covBigNum">₹—</div>
+            <div class="cov-big-lbl">Daily Coverage</div>
+          </div>
+        </div>
+        <div class="cov-grid">
+          <div class="cov-card cov-card-1">
+            <div class="cov-card-icon">🌧️</div>
+            <div class="cov-card-title">Weather Disruption</div>
+            <div class="cov-card-val" id="covWeather">—</div>
+            <div class="cov-card-sub">Heavy rain, floods, hailstorm</div>
+            <div class="cov-card-bar"><div class="cov-bar-fill" style="width:85%"></div></div>
+          </div>
+          <div class="cov-card cov-card-2">
+            <div class="cov-card-icon">🌫️</div>
+            <div class="cov-card-title">Air Quality / Smog</div>
+            <div class="cov-card-val" id="covAir">—</div>
+            <div class="cov-card-sub">AQI &gt; 300 disruption days</div>
+            <div class="cov-card-bar"><div class="cov-bar-fill" style="width:70%"></div></div>
+          </div>
+          <div class="cov-card cov-card-3">
+            <div class="cov-card-icon">🚫</div>
+            <div class="cov-card-title">Strike / Blockage</div>
+            <div class="cov-card-val" id="covStrike">—</div>
+            <div class="cov-card-sub">Road blocks, area shutdowns</div>
+            <div class="cov-card-bar"><div class="cov-bar-fill" style="width:60%"></div></div>
+          </div>
+          <div class="cov-card cov-card-4">
+            <div class="cov-card-icon">🌡️</div>
+            <div class="cov-card-title">Extreme Heat</div>
+            <div class="cov-card-val" id="covHeat">—</div>
+            <div class="cov-card-sub">Temperature above 44°C advisory</div>
+            <div class="cov-card-bar"><div class="cov-bar-fill" style="width:50%"></div></div>
+          </div>
+        </div>
+        <div class="cov-table-card">
+          <div class="cov-table-title">Coverage Breakdown</div>
+          <div class="cov-table">
+            <div class="cov-row cov-row-head"><span>Component</span><span>Amount</span><span>Trigger</span><span>Max/Week</span></div>
+            <div class="cov-row"><span>Base Coverage</span><span id="ctBase" class="cov-val-green">—</span><span>Disruption Score &gt; 60</span><span id="ctBaseWeek">—</span></div>
+            <div class="cov-row"><span>Auto-Payout (70%)</span><span id="ctPayout" class="cov-val-green">—</span><span>Auto-triggered</span><span id="ctPayoutWeek">—</span></div>
+            <div class="cov-row"><span>Weekly Premium</span><span id="ctPremium" class="cov-val-red">—</span><span>Every Monday</span><span id="ctPremiumWeek">—</span></div>
+            <div class="cov-row"><span>Predicted Daily Loss</span><span id="ctLoss" class="cov-val-red">—</span><span>Weather-adjusted</span><span id="ctLossWeek">—</span></div>
+            <div class="cov-row cov-row-total"><span>Net Protection Value</span><span id="ctNet" class="cov-val-green">—</span><span>Payout − Premium</span><span>Per event</span></div>
+          </div>
+        </div>
+        <div class="not-covered">
+          <div class="nc-title">⚠️ What's Not Covered</div>
+          <div class="nc-grid">
+            <div class="nc-item">❌ Platform-side order cancellations</div>
+            <div class="nc-item">❌ Personal vehicle breakdown</div>
+            <div class="nc-item">❌ Self-imposed off days</div>
+            <div class="nc-item">❌ Disruptions under 2 hours</div>
+            <div class="nc-item">❌ More than 3 claims per week</div>
+            <div class="nc-item">❌ Unverified disruption events</div>
+          </div>
+        </div>
+      </div><!-- /tab-coverage -->
+
+      <!-- ══ TAB: PAYOUT ══ -->
+      <div class="tab-panel" id="tab-payout">
+        <div class="tab-header">
+          <h2 class="tab-title">Payout Center</h2>
+          <p class="tab-desc">Trigger a claim, track your payouts, and understand how the payout engine works.</p>
+        </div>
+        <div class="pay-calc-card">
+          <div class="pay-calc-left">
+            <div class="pay-calc-label">⚡ Live Payout Calculator</div>
+            <p class="pay-calc-desc">Adjust earnings to see exactly what you'd receive on a disruption day.</p>
+            <div class="pay-slider-wrap">
+              <label class="pay-slider-lbl">Daily Earnings: <strong id="sliderEarningsVal">₹800</strong></label>
+              <input type="range" id="paySlider" min="200" max="3000" step="50" value="800" oninput="updatePayCalc()"/>
+            </div>
+            <div class="pay-calc-risk-row">
+              <span class="pay-risk-lbl">Risk Level:</span>
+              <span class="pay-risk-btn active" onclick="setCalcRisk('High',this)">High</span>
+              <span class="pay-risk-btn" onclick="setCalcRisk('Medium',this)">Medium</span>
+              <span class="pay-risk-btn" onclick="setCalcRisk('Low',this)">Low</span>
+            </div>
+          </div>
+          <div class="pay-calc-right">
+            <div class="pay-calc-result">
+              <div class="pcr-row"><span>Coverage</span><strong id="calcCoverage">₹800</strong></div>
+              <div class="pcr-row"><span>Weekly Premium</span><strong class="pcr-red" id="calcPremium">₹30</strong></div>
+              <div class="pcr-row"><span>Predicted Loss</span><strong class="pcr-red" id="calcLoss">₹300</strong></div>
+              <div class="pcr-div"></div>
+              <div class="pcr-row pcr-big"><span>You Receive</span><strong class="pcr-green" id="calcPayout">₹560</strong></div>
+              <div class="pcr-note">70% of coverage · deposited to UPI in &lt;2 min</div>
+            </div>
+          </div>
+        </div>
+        <div class="claim-trigger-card">
+          <div class="ct-head">
+            <div>
+              <div class="ct-title">🚨 File a Disruption Claim</div>
+              <div class="ct-sub">Select the disruption type and submit. AI verifies automatically.</div>
+            </div>
+            <div class="ct-eligibility"><span class="elig-dot"></span> Eligible for claim</div>
+          </div>
+          <div class="ct-types">
+            <label class="ct-type active" onclick="selectClaimType(this,'rain')"><span class="ct-type-ico">🌧️</span><span class="ct-type-lbl">Heavy Rain</span></label>
+            <label class="ct-type" onclick="selectClaimType(this,'smog')"><span class="ct-type-ico">🌫️</span><span class="ct-type-lbl">Air Quality</span></label>
+            <label class="ct-type" onclick="selectClaimType(this,'strike')"><span class="ct-type-ico">🚫</span><span class="ct-type-lbl">Area Strike</span></label>
+            <label class="ct-type" onclick="selectClaimType(this,'flood')"><span class="ct-type-ico">🌊</span><span class="ct-type-lbl">Flash Flood</span></label>
+            <label class="ct-type" onclick="selectClaimType(this,'heat')"><span class="ct-type-ico">🌡️</span><span class="ct-type-lbl">Extreme Heat</span></label>
+          </div>
+          <div class="ct-progress" id="ctProgress" style="display:none">
+            <div class="ctp-step" id="ctp1"><span class="ctp-dot"></span><span class="ctp-lbl">Verifying disruption data…</span></div>
+            <div class="ctp-step" id="ctp2"><span class="ctp-dot"></span><span class="ctp-lbl">Calculating income impact…</span></div>
+            <div class="ctp-step" id="ctp3"><span class="ctp-dot"></span><span class="ctp-lbl">Processing payout…</span></div>
+            <div class="ctp-step" id="ctp4"><span class="ctp-dot"></span><span class="ctp-lbl">Crediting to UPI…</span></div>
+          </div>
+          <button class="ct-submit-btn" id="ctSubmitBtn" onclick="submitClaim()">
+            <span id="ctBtnText">Submit Claim Request</span>
+            <span id="ctBtnLoad" style="display:none"><span class="spinner"></span> Processing…</span>
+          </button>
+        </div>
+        <div class="payout-history-card">
+          <div class="ph-head">
+            <div class="ph-title">📋 Payout History</div>
+            <div class="ph-total">Total Received: <strong id="phTotal">₹0</strong></div>
+          </div>
+          <div class="ph-table">
+            <div class="ph-row ph-head-row"><span>Date</span><span>Disruption</span><span>Coverage</span><span>Payout</span><span>Status</span></div>
+            <div id="phRows"><div class="ph-empty">No payouts yet. Submit a claim above to get started.</div></div>
+          </div>
+        </div>
+        <div class="payout-explainer">
+          <div class="pe-title">How the Payout Engine Works</div>
+          <div class="pe-steps">
+            <div class="pe-step"><div class="pe-step-num">1</div><div class="pe-step-body"><strong>Parametric Trigger</strong><p>When disruption score exceeds 60/100, your policy activates automatically — no manual filing needed.</p></div></div>
+            <div class="pe-step"><div class="pe-step-num">2</div><div class="pe-step-body"><strong>70% Rule</strong><p>You receive 70% of your declared daily coverage. ₹800 coverage → ₹560 payout per qualifying event.</p></div></div>
+            <div class="pe-step"><div class="pe-step-num">3</div><div class="pe-step-body"><strong>Instant UPI Credit</strong><p>Funds hit your registered UPI ID within 120 seconds of approval. No processing delays.</p></div></div>
+            <div class="pe-step"><div class="pe-step-num">4</div><div class="pe-step-body"><strong>Weekly Cap</strong><p>Maximum 3 claims per week, up to 2× your daily coverage total. Resets every Monday 6 AM.</p></div></div>
+          </div>
+        </div>
+      </div><!-- /tab-payout -->
+
+      <!-- ══ TAB: CLAIM HISTORY ══ -->
+      <div class="tab-panel" id="tab-history">
+        <div class="tab-header">
+          <h2 class="tab-title">Claim History</h2>
+          <p class="tab-desc">Full record of all your disruption events and payouts.</p>
+        </div>
+        <div class="history-summary-row">
+          <div class="hs-card"><div class="hs-val" id="hsTotalClaims">0</div><div class="hs-lbl">Total Claims</div></div>
+          <div class="hs-card"><div class="hs-val hs-green" id="hsTotalPaid">₹0</div><div class="hs-lbl">Total Paid Out</div></div>
+          <div class="hs-card"><div class="hs-val hs-blue" id="hsThisWeek">0</div><div class="hs-lbl">This Week</div></div>
+          <div class="hs-card"><div class="hs-val hs-amber" id="hsRemaining">3</div><div class="hs-lbl">Claims Remaining</div></div>
+        </div>
+        <div class="full-history-card">
+          <div class="fh-head"><span>Disruption Event</span><span>Date &amp; Time</span><span>Amount</span><span>Status</span></div>
+          <div id="fullHistoryRows"><div class="ph-empty">No claims filed yet. Go to the Payout tab to submit a claim.</div></div>
+        </div>
+      </div><!-- /tab-history -->
+
+      <!-- ══ TAB: MY POLICY ══ -->
+      <div class="tab-panel" id="tab-policy">
+        <div class="tab-header">
+          <h2 class="tab-title">My Policy</h2>
+          <p class="tab-desc">Your complete GigGuard policy document — terms, coverage limits, and renewal details.</p>
+        </div>
+
+        <!-- Policy Card -->
+        <div class="policy-hero-card" id="policyHeroCard">
+          <div class="phc-left">
+            <div class="phc-tag">GIGGUARD PARAMETRIC POLICY</div>
+            <div class="phc-name" id="phcName">—</div>
+            <div class="phc-meta" id="phcMeta">—</div>
+            <div class="phc-id" id="phcId">Policy ID: GG-LOADING</div>
+            <div class="phc-dates">
+              <span>Issued: <strong id="phcIssued">—</strong></span>
+              <span>Renews: <strong id="phcRenews">—</strong></span>
+            </div>
+          </div>
+          <div class="phc-right">
+            <div class="phc-shield-wrap">
+              <svg width="52" height="52" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg>
+            </div>
+            <div class="phc-status">ACTIVE</div>
+          </div>
+        </div>
+
+        <!-- Policy Details Grid -->
+        <div class="policy-grid">
+          <div class="policy-detail-card">
+            <div class="pdc-label">Risk Classification</div>
+            <div class="pdc-value" id="polRisk">—</div>
+            <div class="pdc-note">Based on city disruption index</div>
+          </div>
+          <div class="policy-detail-card">
+            <div class="pdc-label">Daily Coverage</div>
+            <div class="pdc-value pdc-green" id="polCoverage">—</div>
+            <div class="pdc-note">Equal to declared daily earnings</div>
+          </div>
+          <div class="policy-detail-card">
+            <div class="pdc-label">Weekly Premium</div>
+            <div class="pdc-value pdc-amber" id="polPremium">—</div>
+            <div class="pdc-note">Auto-debited every Monday 6 AM</div>
+          </div>
+          <div class="policy-detail-card">
+            <div class="pdc-label">Max Payout / Event</div>
+            <div class="pdc-value pdc-green" id="polMaxPayout">—</div>
+            <div class="pdc-note">70% of coverage per disruption</div>
+          </div>
+          <div class="policy-detail-card">
+            <div class="pdc-label">Max Claims / Week</div>
+            <div class="pdc-value">3 events</div>
+            <div class="pdc-note">Resets Monday 6 AM</div>
+          </div>
+          <div class="policy-detail-card">
+            <div class="pdc-label">Weekly Payout Cap</div>
+            <div class="pdc-value pdc-green" id="polWeeklyCap">—</div>
+            <div class="pdc-note">2× daily coverage maximum</div>
+          </div>
+        </div>
+
+        <!-- Coverage Scope -->
+        <div class="policy-section-card">
+          <div class="psc-title">📋 Coverage Scope</div>
+          <div class="psc-table">
+            <div class="psc-row psc-head"><span>Disruption Type</span><span>Trigger Threshold</span><span>Verification</span><span>Payout</span></div>
+            <div class="psc-row"><span>🌧️ Heavy Rainfall</span><span>Rain &gt; 25mm/hr for 2h</span><span>2 weather APIs</span><span id="polPayRain">—</span></div>
+            <div class="psc-row"><span>🌊 Flash Flood</span><span>Flood alert + blockage</span><span>Govt advisory</span><span id="polPayFlood">—</span></div>
+            <div class="psc-row"><span>🌫️ Air Quality</span><span>AQI &gt; 300 for 3h</span><span>CPCB data feed</span><span id="polPayAir">—</span></div>
+            <div class="psc-row"><span>🚫 Area Strike</span><span>Verified road closure</span><span>Traffic + news</span><span id="polPayStrike">—</span></div>
+            <div class="psc-row"><span>🌡️ Extreme Heat</span><span>Temp &gt; 44°C advisory</span><span>IMD bulletin</span><span id="polPayHeat">—</span></div>
+          </div>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="policy-section-card">
+          <div class="psc-title">📜 Key Terms &amp; Conditions</div>
+          <div class="terms-list">
+            <div class="term-item"><span class="term-num">1.</span><span>This is a parametric insurance policy. Payouts are triggered automatically when predefined disruption thresholds are met, regardless of actual income loss incurred.</span></div>
+            <div class="term-item"><span class="term-num">2.</span><span>The policyholder must maintain an active UPI-linked bank account. GigGuard is not responsible for failed transfers due to incorrect UPI details.</span></div>
+            <div class="term-item"><span class="term-num">3.</span><span>Premium is collected on Monday 6:00 AM IST via UPI AutoPay mandate. If AutoPay fails, a 48-hour grace period is provided before policy suspension.</span></div>
+            <div class="term-item"><span class="term-num">4.</span><span>Coverage is valid only within the registered city and declared work zone. Claims filed outside the registered zone will be auto-rejected.</span></div>
+            <div class="term-item"><span class="term-num">5.</span><span>All disruption events must be verifiable through at least two independent, real-time data sources integrated with the GigGuard AI Engine.</span></div>
+            <div class="term-item"><span class="term-num">6.</span><span>GigGuard reserves the right to adjust risk categories and premium rates upon 7-day written notice to the policyholder via registered mobile number.</span></div>
+            <div class="term-item"><span class="term-num">7.</span><span>This product operates under the IRDAI Regulatory Sandbox framework. It is not a traditional insurance product and is subject to sandbox-specific regulatory conditions.</span></div>
+          </div>
+        </div>
+
+        <div class="policy-actions">
+          <button class="pol-btn pol-btn-primary" onclick="switchTab('tab-payout', document.querySelector('[data-tab=tab-payout]'))">💸 File a Claim</button>
+          <button class="pol-btn pol-btn-secondary" onclick="window.print()">🖨️ Download Policy</button>
+        </div>
+      </div><!-- /tab-policy -->
+
+      <!-- ══ TAB: ZONE MAP ══ -->
+      <div class="tab-panel" id="tab-zonemap">
+        <div class="tab-header">
+          <h2 class="tab-title">Zone Map &amp; Risk Atlas</h2>
+          <p class="tab-desc">Live disruption risk across your city zones — updated every 15 minutes by the AI engine.</p>
+        </div>
+
+        <!-- City Zone Overview -->
+        <div class="zone-city-bar" id="zoneCityBar">
+          <div class="zcb-info">
+            <div class="zcb-city" id="zcbCity">Chennai</div>
+            <div class="zcb-meta" id="zcbMeta">Disruption Index · Updated 2 min ago</div>
+          </div>
+          <div class="zcb-stats">
+            <div class="zcb-stat"><span class="zcb-dot red"></span>High Risk Zones: <strong id="zcbHigh">2</strong></div>
+            <div class="zcb-stat"><span class="zcb-dot amber"></span>Medium Risk: <strong id="zcbMed">1</strong></div>
+            <div class="zcb-stat"><span class="zcb-dot green"></span>Safe Zones: <strong id="zcbSafe">1</strong></div>
+          </div>
+        </div>
+
+        <!-- Zone Cards -->
+        <div class="zone-grid" id="zoneGrid">
+          <!-- dynamically filled -->
+        </div>
+
+        <!-- Map Placeholder with Live Feel -->
+        <div class="map-card">
+          <div class="map-head">
+            <div class="map-title">🗺️ Live Zone Risk Map — <span id="mapCity">Chennai</span></div>
+            <div class="map-legend">
+              <span><span class="ml-dot red"></span>High Risk</span>
+              <span><span class="ml-dot amber"></span>Medium</span>
+              <span><span class="ml-dot green"></span>Safe</span>
+              <span><span class="ml-dot blue"></span>Your Zone</span>
+            </div>
+          </div>
+          <div class="map-visual" id="mapVisual">
+            <div class="map-grid-lines"></div>
+            <!-- Zone blobs rendered by JS -->
+          </div>
+          <div class="map-footer">
+            <span>🔄 Auto-refreshes every 15 min</span>
+            <span>📡 Data: IMD + CPCB + Google Traffic</span>
+          </div>
+        </div>
+
+        <!-- Weather Intelligence -->
+        <div class="weather-grid" id="weatherGrid">
+          <div class="weather-card wc-rain">
+            <div class="wc-icon">🌧️</div>
+            <div class="wc-label">Rain Index</div>
+            <div class="wc-val" id="wcRain">78</div>
+            <div class="wc-bar"><div class="wc-fill" id="wcRainBar" style="width:78%"></div></div>
+          </div>
+          <div class="weather-card wc-aqi">
+            <div class="wc-icon">🌫️</div>
+            <div class="wc-label">AQI Level</div>
+            <div class="wc-val" id="wcAqi">142</div>
+            <div class="wc-bar"><div class="wc-fill wc-fill-amber" id="wcAqiBar" style="width:47%"></div></div>
+          </div>
+          <div class="weather-card wc-wind">
+            <div class="wc-icon">💨</div>
+            <div class="wc-label">Wind Speed</div>
+            <div class="wc-val" id="wcWind">22 km/h</div>
+            <div class="wc-bar"><div class="wc-fill wc-fill-green" style="width:30%"></div></div>
+          </div>
+          <div class="weather-card wc-temp">
+            <div class="wc-icon">🌡️</div>
+            <div class="wc-label">Temperature</div>
+            <div class="wc-val" id="wcTemp">34°C</div>
+            <div class="wc-bar"><div class="wc-fill wc-fill-amber" style="width:60%"></div></div>
+          </div>
+        </div>
+
+        <!-- Route Recommendations -->
+        <div class="route-card">
+          <div class="route-title">🛣️ Recommended Routes Today</div>
+          <div class="route-list" id="routeList"></div>
+        </div>
+      </div><!-- /tab-zonemap -->
+
+      <!-- ══ TAB: SETTINGS ══ -->
+      <div class="tab-panel" id="tab-settings">
+        <div class="tab-header">
+          <h2 class="tab-title">Settings</h2>
+          <p class="tab-desc">Manage your account, notification preferences, and policy configuration.</p>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="settings-section">
+          <div class="ss-title">👤 Profile Information</div>
+          <div class="settings-card">
+            <div class="profile-row">
+              <div class="profile-avatar" id="settAvatar">R</div>
+              <div class="profile-info">
+                <div class="profile-name" id="settName">—</div>
+                <div class="profile-meta" id="settMeta">—</div>
+              </div>
+              <button class="edit-btn" onclick="showEditToast()">Edit Profile</button>
+            </div>
+            <div class="sett-fields">
+              <div class="sf-row"><div class="sf-lbl">City</div><div class="sf-val" id="sfCity">—</div></div>
+              <div class="sf-row"><div class="sf-lbl">Platform</div><div class="sf-val" id="sfPlatform">—</div></div>
+              <div class="sf-row"><div class="sf-lbl">Work Zone</div><div class="sf-val" id="sfZone">—</div></div>
+              <div class="sf-row"><div class="sf-lbl">Daily Earnings</div><div class="sf-val" id="sfEarnings">—</div></div>
+              <div class="sf-row"><div class="sf-lbl">Hours / Day</div><div class="sf-val" id="sfHours">—</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="settings-section">
+          <div class="ss-title">🔔 Notification Preferences</div>
+          <div class="settings-card">
+            <div class="toggle-row">
+              <div><div class="tg-label">Rain Alert Notifications</div><div class="tg-sub">Get notified 30 min before heavy rainfall in your zone</div></div>
+              <label class="toggle-switch"><input type="checkbox" checked onchange="saveToggle('rainAlerts',this)"/><span class="ts-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="tg-label">Claim Auto-Trigger Alerts</div><div class="tg-sub">Notify when a disruption claim is auto-filed</div></div>
+              <label class="toggle-switch"><input type="checkbox" checked onchange="saveToggle('claimAlerts',this)"/><span class="ts-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="tg-label">Payout Success SMS</div><div class="tg-sub">SMS confirmation when payout is credited to UPI</div></div>
+              <label class="toggle-switch"><input type="checkbox" checked onchange="saveToggle('payoutSms',this)"/><span class="ts-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="tg-label">Weekly Earnings Report</div><div class="tg-sub">Sunday evening summary of earnings and protection</div></div>
+              <label class="toggle-switch"><input type="checkbox" onchange="saveToggle('weeklyReport',this)"/><span class="ts-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="tg-label">Zone Surge Alerts</div><div class="tg-sub">Real-time tips when high-demand zones are detected</div></div>
+              <label class="toggle-switch"><input type="checkbox" checked onchange="saveToggle('surgeAlerts',this)"/><span class="ts-slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Policy Settings -->
+        <div class="settings-section">
+          <div class="ss-title">🛡️ Policy Configuration</div>
+          <div class="settings-card">
+            <div class="toggle-row">
+              <div><div class="tg-label">Auto-Claim Enabled</div><div class="tg-sub">Automatically file claims when disruption thresholds are crossed</div></div>
+              <label class="toggle-switch"><input type="checkbox" checked onchange="saveToggle('autoClaim',this)"/><span class="ts-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="tg-label">Auto-Renew Premium</div><div class="tg-sub">Automatically renew weekly policy every Monday</div></div>
+              <label class="toggle-switch"><input type="checkbox" checked onchange="saveToggle('autoRenew',this)"/><span class="ts-slider"></span></label>
+            </div>
+            <div class="sett-fields" style="margin-top:18px">
+              <div class="sf-row"><div class="sf-lbl">Current Risk Level</div><div class="sf-val" id="sfRisk">—</div></div>
+              <div class="sf-row"><div class="sf-lbl">Premium Rate</div><div class="sf-val" id="sfPremRate">—</div></div>
+              <div class="sf-row"><div class="sf-lbl">UPI ID (masked)</div><div class="sf-val" id="sfUpi">—</div></div>
+              <div class="sf-row"><div class="sf-lbl">Policy Status</div><div class="sf-val"><span class="sett-status-ok">🟢 Active</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-section">
+          <div class="ss-title" style="color:var(--rose)">⚠️ Account Actions</div>
+          <div class="settings-card danger-card">
+            <div class="danger-row">
+              <div>
+                <div class="tg-label">Pause Policy</div>
+                <div class="tg-sub">Temporarily suspend coverage without cancelling. Resumes next Monday.</div>
+              </div>
+              <button class="danger-btn-soft" onclick="showEditToast('Policy paused until next Monday')">Pause</button>
+            </div>
+            <div class="danger-row">
+              <div>
+                <div class="tg-label">Re-register with Updated Details</div>
+                <div class="tg-sub">Update your earnings, city, or platform to recalculate your risk and premium.</div>
+              </div>
+              <button class="danger-btn" onclick="showView('register')">Re-register</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toast notification -->
+        <div class="settings-toast" id="settToast"></div>
+      </div><!-- /tab-settings -->
+
+    </main>
+  </div>
+</div>
+
+<!-- Payout Popup -->
+<div class="payout-overlay" id="payoutOverlay">
+  <div class="payout-box">
+    <div class="po-ico">💸</div>
+    <div class="po-title">Payout Approved!</div>
+    <div class="po-sub">Disruption detected & claim auto-processed</div>
+    <div class="po-amount" id="poAmount">₹560</div>
+    <div class="po-note">Credited to your registered UPI ID within 2 minutes</div>
+    <div class="po-steps">
+      <div class="po-step">🔍 Disruption verified</div>
+      <div class="po-step">✅ Claim auto-approved</div>
+      <div class="po-step">💳 Amount processed</div>
+    </div>
+    <button class="po-close" onclick="closePayoutPopup()">View Statement</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   GIGGUARD · SINGLE CLEAN SCRIPT
+   No duplicate functions. One source of truth.
+═══════════════════════════════════════════════════ */
+
+/* ── CITY DATA ── */
+const CITY_DATA = {
+  Chennai:   { rain:78, aqi:142, bestHour:'7 PM – 10 PM', avoidZone:'Mylapore during peak rain', surgeZone:'Velachery post-rain', zones:['T. Nagar','Velachery','Adyar','Mylapore'] },
+  Mumbai:    { rain:82, aqi:158, bestHour:'6 PM – 9 PM',  avoidZone:'SV Road during showers',    surgeZone:'BKC & Andheri West',  zones:['Bandra','Andheri','Dadar','Kurla'] },
+  Delhi:     { rain:45, aqi:220, bestHour:'8 PM – 11 PM', avoidZone:'Janpath & CP in rain',       surgeZone:'South Delhi corridors',zones:['Janpath','CP','Saket','Malviya Nagar'] },
+  Bengaluru: { rain:65, aqi:115, bestHour:'7 PM – 10 PM', avoidZone:'Outer Ring Road floods',     surgeZone:'Koramangala & Indiranagar', zones:['Koramangala','Indiranagar','HSR','Whitefield'] },
+  Hyderabad: { rain:58, aqi:130, bestHour:'7 PM – 10 PM', avoidZone:'Low-lying Old City areas',   surgeZone:'Hitech City corridor', zones:['Hitech City','Banjara Hills','Jubilee Hills','Madhapur'] },
+  Kolkata:   { rain:72, aqi:168, bestHour:'6 PM – 9 PM',  avoidZone:'Low-lying South Kolkata',    surgeZone:'New Town & Salt Lake', zones:['Park Street','Salt Lake','New Town','Behala'] },
+  Pune:      { rain:61, aqi:108, bestHour:'7 PM – 10 PM', avoidZone:'Shivajinagar during rain',   surgeZone:'Koregaon Park belt',   zones:['Koregaon Park','Viman Nagar','Hinjewadi','Kothrud'] },
+  Ahmedabad: { rain:34, aqi:95,  bestHour:'8 PM – 11 PM', avoidZone:'Old City waterlogging',      surgeZone:'SG Highway premium zone', zones:['SG Highway','Prahlad Nagar','Navrangpura','CG Road'] },
+};
+
+const SUGGESTIONS = {
+  High:   c => { const d=CITY_DATA[c]||CITY_DATA.Chennai; return [
+    `Avoid ${d.avoidZone}. Reposition to ${d.surgeZone} after 6 PM for 40%+ surge.`,
+    `Heavy disruption ahead. ${d.surgeZone} shows 3× order density during rain events.`,
+    `Storm alert active. Pre-position near cloud kitchens in ${d.zones[0]} before 5 PM.`]; },
+  Medium: c => { const d=CITY_DATA[c]||CITY_DATA.Chennai; return [
+    `Moderate disruption expected. Target ${d.zones[1]} restaurants 12–2 PM.`,
+    `Partial rain likely. ${d.surgeZone} maintains strong order density — stay active.`,
+    `Smart strategy: Zone A morning, shift to ${d.surgeZone} after 5 PM.`]; },
+  Low:    c => { const d=CITY_DATA[c]||CITY_DATA.Chennai; return [
+    `Low risk today. Maximize hours in ${d.zones[0]} — highest order density on clear days.`,
+    `Great earning day! ${d.surgeZone} shows premium orders during ${d.bestHour}.`,
+    `Clear conditions. Full shift in Zone A — weather-adjusted earnings at peak.`]; },
+};
+
+const SIM_MSGS = {
+  rain:   ['🌧️ Heavy rainfall detected in your zone','📊 Income disruption verified (72% impact)','🤖 AI claim engine triggered automatically'],
+  smog:   ['🌫️ AQI > 300 detected — visibility disruption','📊 Delivery delay factor 68% verified','🤖 AI claim engine triggered automatically'],
+  strike: ['🚫 Road blockage reported in primary zone','📊 Area access disruption 80% verified','🤖 AI claim engine triggered automatically'],
+  flood:  ['🌊 Flash flood alert issued for your zone','📊 Severe delivery disruption 91% verified','🤖 AI claim engine triggered automatically'],
+  heat:   ['🌡️ Extreme heat advisory 44°C+ issued','📊 Outdoor worker disruption 58% verified','🤖 AI claim engine triggered automatically'],
+};
+
+const CLAIM_LABELS = { rain:'Heavy Rain', smog:'Air Quality/Smog', strike:'Area Strike', flood:'Flash Flood', heat:'Extreme Heat' };
+
+/* ── ZONE MAP DATA ── */
+const ZONE_DATA = {
+  Chennai:   [{name:'T. Nagar',risk:'High',rain:82,orders:180,surge:'38%',earn:'₹680'},{name:'Velachery',risk:'Medium',rain:60,orders:140,surge:'22%',earn:'₹820'},{name:'Adyar',risk:'Low',rain:40,orders:120,surge:'15%',earn:'₹900'},{name:'Mylapore',risk:'High',rain:78,orders:160,surge:'30%',earn:'₹720'}],
+  Mumbai:    [{name:'Bandra',risk:'High',rain:88,orders:220,surge:'45%',earn:'₹950'},{name:'Andheri West',risk:'Medium',rain:65,orders:190,surge:'28%',earn:'₹1100'},{name:'Dadar',risk:'High',rain:80,orders:170,surge:'35%',earn:'₹880'},{name:'BKC',risk:'Low',rain:35,orders:250,surge:'18%',earn:'₹1200'}],
+  Delhi:     [{name:'Connaught Pl',risk:'Medium',rain:40,orders:200,surge:'25%',earn:'₹820'},{name:'Saket',risk:'Low',rain:28,orders:180,surge:'12%',earn:'₹900'},{name:'Karol Bagh',risk:'Medium',rain:45,orders:160,surge:'20%',earn:'₹780'},{name:'South Delhi',risk:'Low',rain:30,orders:190,surge:'15%',earn:'₹950'}],
+  Bengaluru: [{name:'Koramangala',risk:'Medium',rain:68,orders:200,surge:'30%',earn:'₹980'},{name:'Indiranagar',risk:'Low',rain:50,orders:180,surge:'20%',earn:'₹1050'},{name:'HSR Layout',risk:'Medium',rain:62,orders:160,surge:'25%',earn:'₹880'},{name:'Whitefield',risk:'High',rain:72,orders:130,surge:'18%',earn:'₹760'}],
+  Hyderabad: [{name:'Hitech City',risk:'Low',rain:45,orders:220,surge:'22%',earn:'₹1000'},{name:'Banjara Hills',risk:'Medium',rain:58,orders:170,surge:'28%',earn:'₹880'},{name:'Jubilee Hills',risk:'Low',rain:40,orders:160,surge:'18%',earn:'₹920'},{name:'Madhapur',risk:'Medium',rain:55,orders:190,surge:'24%',earn:'₹950'}],
+  Kolkata:   [{name:'Park Street',risk:'High',rain:75,orders:160,surge:'35%',earn:'₹780'},{name:'Salt Lake',risk:'Medium',rain:60,orders:180,surge:'22%',earn:'₹860'},{name:'New Town',risk:'Low',rain:40,orders:200,surge:'18%',earn:'₹950'},{name:'Behala',risk:'High',rain:80,orders:130,surge:'40%',earn:'₹680'}],
+  Pune:      [{name:'Koregaon Park',risk:'Low',rain:48,orders:190,surge:'20%',earn:'₹1000'},{name:'Viman Nagar',risk:'Medium',rain:60,orders:160,surge:'25%',earn:'₹880'},{name:'Hinjewadi',risk:'Low',rain:42,orders:140,surge:'15%',earn:'₹850'},{name:'Kothrud',risk:'Medium',rain:62,orders:150,surge:'22%',earn:'₹820'}],
+  Ahmedabad: [{name:'SG Highway',risk:'Low',rain:28,orders:200,surge:'15%',earn:'₹900'},{name:'Prahlad Nagar',risk:'Low',rain:25,orders:170,surge:'12%',earn:'₹870'},{name:'Navrangpura',risk:'Medium',rain:38,orders:150,surge:'18%',earn:'₹800'},{name:'CG Road',risk:'Low',rain:30,orders:180,surge:'14%',earn:'₹850'}],
+};
+
+const ROUTE_DATA = {
+  Chennai:   [{ico:'🛣️',name:'ECR to Velachery via OMR',detail:'18 km · Low traffic · Post-rain surge corridor',tag:'safe'},{ico:'🚧',name:'Anna Salai towards T. Nagar',detail:'Flooding risk · Avoid 4–8 PM',tag:'avoid'},{ico:'⚡',name:'Inner Ring Road – Adyar',detail:'12 km · Moderate traffic · Good order density',tag:'caution'}],
+  Mumbai:    [{ico:'🛣️',name:'BKC to Andheri via LBS Marg',detail:'14 km · Clear · High premium order route',tag:'safe'},{ico:'🚧',name:'SV Road during monsoon hours',detail:'Waterlogging likely 3–7 PM',tag:'avoid'},{ico:'⚡',name:'Eastern Express Highway',detail:'22 km · Moderate · Good restaurant density',tag:'caution'}],
+  default:   [{ico:'🛣️',name:'Primary City Ring Road',detail:'Recommended route · Good traffic today',tag:'safe'},{ico:'⚡',name:'Suburban Connector Route',detail:'Moderate conditions · Peak order zone',tag:'caution'},{ico:'🚧',name:'Old City Core Area',detail:'Heavy disruption risk · Avoid if possible',tag:'avoid'}],
+};
+
+/* ── STATE ── */
+let userData          = null;
+let claimsHistory     = [];
+let calcRisk          = 'High';
+let selectedClaimType = 'rain';
+let weeklyClaimsCount = 0;
+let suggIdx           = 0;
+let simRunning        = false;
+
+/* ── RISK ENGINE ── */
+function computeRisk(city, earnings) {
+  const d    = CITY_DATA[city] || { rain:70, aqi:150 };
+  const rain = d.rain;
+  const risk = rain > 60 ? 'High' : rain > 40 ? 'Medium' : 'Low';
+  const rates = { High:[0.0375,0.375], Medium:[0.025,0.20], Low:[0.0125,0.08] };
+  const [pRate, lRate] = rates[risk];
+  const premium        = Math.round(earnings * pRate);
+  const predictedLoss  = Math.round(earnings * lRate);
+  const coverage       = earnings;
+  const payout         = Math.round(coverage * 0.7);
+  const disruptionScore= Math.min(99, rain + Math.floor(Math.random() * 7));
+  const pool           = SUGGESTIONS[risk](city);
+  const suggestion     = pool[Math.floor(Math.random() * pool.length)];
+  return { risk, premium, coverage, predictedLoss, payout, disruptionScore, suggestion, cityData: d };
+}
+
+/* ── GREETING ── */
+function getDynamicGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  if (h < 21) return 'Good evening';
+  return 'Good night';
+}
+
+/* ── VIEW SWITCHER ── */
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ── TAB SWITCHER (single, correct version) ── */
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById(tabId);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+
+  if (!userData) return;
+  if (tabId === 'tab-coverage') populateCoverageTab(userData);
+  if (tabId === 'tab-policy')   populatePolicyTab(userData);
+  if (tabId === 'tab-zonemap')  populateZoneMap(userData);
+  if (tabId === 'tab-settings') populateSettings(userData);
+  if (tabId === 'tab-payout') {
+    document.getElementById('paySlider').value = userData.earnings;
+    document.getElementById('sliderEarningsVal').textContent = '₹' + userData.earnings;
+    updatePayCalc();
+  }
+}
+
+/* ── LOADING SCREEN ── */
+function runLoadingScreen(onDone) {
+  const screen = document.getElementById('loadingScreen');
+  screen.classList.add('show');
+  const steps = screen.querySelectorAll('.ls-step');
+  steps.forEach(s => s.classList.remove('vis','done'));
+  const barEl = screen.querySelector('.ls-bar');
+  barEl.style.animation = 'none';
+  void barEl.offsetWidth;
+  barEl.style.animation = 'fillBar 3.4s ease-out forwards';
+  steps.forEach((step, i) => {
+    const delay = parseInt(step.dataset.d) || (i * 700 + 400);
+    setTimeout(() => {
+      step.classList.add('vis');
+      if (i > 0) steps[i - 1].classList.add('done');
+    }, delay);
+  });
+  setTimeout(() => steps[steps.length - 1].classList.add('done'), 3100);
+  setTimeout(() => { screen.classList.remove('show'); onDone(); }, 3700);
+}
+
+/* ── FORM SUBMIT ── */
+document.getElementById('regForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const ids = ['rName','rCity','rPlatform','rEarnings','rHours','rZone'];
+  const flds = ids.map(id => document.getElementById(id));
+  let ok = true;
+  flds.forEach(el => {
+    const shell = el.closest('.inp-shell');
+    if (!el.value.trim()) {
+      shell.classList.add('err'); ok = false;
+      el.addEventListener('input', () => shell.classList.remove('err'), { once:true });
+    }
+  });
+  if (!ok) return;
+
+  const btn = document.getElementById('subBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  const payload = {
+    name:     flds[0].value.trim(),
+    city:     flds[1].value,
+    platform: flds[2].value,
+    earnings: parseFloat(flds[3].value),
+    hours:    parseFloat(flds[4].value),
+    zone:     flds[5].value,
+  };
+
+  const risk = computeRisk(payload.city, payload.earnings);
+  userData = { ...payload, ...risk };
+  claimsHistory = []; weeklyClaimsCount = 0; suggIdx = 0;
+
+  setTimeout(() => {
+    btn.classList.remove('loading'); btn.disabled = false;
+    runLoadingScreen(() => {
+      populateDashboard(userData);
+      showView('dashboard');
+      // Reset to dashboard tab
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-dashboard').classList.add('active');
+      const firstBtn = document.querySelector('[data-tab="tab-dashboard"]');
+      if (firstBtn) firstBtn.classList.add('active');
+    });
+  }, 300);
+});
+
+/* ── POPULATE DASHBOARD ── */
+function populateDashboard(u) {
+  const now = new Date();
+  const greetEl = document.getElementById('dGreeting');
+  if (greetEl) greetEl.textContent = getDynamicGreeting();
+  document.getElementById('dName').textContent     = u.name;
+  document.getElementById('dDate').textContent     = now.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('dCity').textContent     = '📍 ' + u.city;
+  document.getElementById('dPlatform').textContent = '🚴 ' + u.platform;
+
+  const alertEl = document.getElementById('dAlert');
+  alertEl.className = 'tb-tag';
+  if (u.risk === 'High')   { alertEl.textContent = '⚠️ High Risk Day';   alertEl.classList.add('tb-alert-high'); }
+  else if (u.risk === 'Medium') { alertEl.textContent = '⚡ Moderate Risk'; alertEl.classList.add('tb-alert-med'); }
+  else                     { alertEl.textContent = '✅ Low Risk Today'; alertEl.classList.add('tb-alert-low'); }
+
+  const riskEl = document.getElementById('riskVal');
+  riskEl.textContent = u.risk + ' Risk';
+  riskEl.className   = 'rb-value rb-' + u.risk.toLowerCase();
+
+  const banner = document.getElementById('riskBanner');
+  const cols = { High:'rgba(244,63,94,.3)', Medium:'rgba(245,158,11,.25)', Low:'rgba(16,185,129,.25)' };
+  banner.style.borderColor = cols[u.risk] || 'var(--border)';
+
+  document.getElementById('dsNum').textContent = u.disruptionScore;
+  setTimeout(() => {
+    const bar = document.getElementById('dsBar');
+    bar.style.width = u.disruptionScore + '%';
+    bar.className   = 'ds-fill ds-fill-' + u.risk.toLowerCase();
+  }, 500);
+
+  document.getElementById('sPremium').textContent  = '₹' + u.premium;
+  document.getElementById('sCoverage').textContent = '₹' + u.coverage;
+  document.getElementById('sLoss').textContent     = '₹' + u.predictedLoss;
+  document.getElementById('sPayout').textContent   = '₹' + u.payout;
+
+  document.getElementById('sugText').textContent = u.suggestion;
+  updateSugTips(u);
+  drawChart(u);
+}
+
+function updateSugTips(u) {
+  const d = u.cityData || CITY_DATA[u.city] || CITY_DATA.Chennai;
+  document.getElementById('sugTips').innerHTML = [
+    ['🕐', 'Best hours: ' + d.bestHour],
+    ['📍', 'Surge zone: ' + d.surgeZone],
+    ['💡', 'Avoid: ' + d.avoidZone],
+  ].map(([ico, txt]) => `<div class="sug-tip"><span>${ico}</span><span>${txt}</span></div>`).join('');
+}
+
+function rotateSuggestion() {
+  if (!userData) return;
+  const pool = SUGGESTIONS[userData.risk](userData.city);
+  suggIdx = (suggIdx + 1) % pool.length;
+  const el = document.getElementById('sugText');
+  el.style.opacity = '0'; el.style.transition = 'opacity .2s';
+  setTimeout(() => { el.textContent = pool[suggIdx]; el.style.opacity = '1'; }, 220);
+}
+
+/* ── COVERAGE TAB ── */
+function populateCoverageTab(u) {
+  const pId = 'GG-' + u.name.toUpperCase().slice(0,3) + '-' + Math.floor(Math.random()*900000+100000);
+  if(document.getElementById('covPolicyId')) document.getElementById('covPolicyId').textContent = pId;
+  if(document.getElementById('covName'))     document.getElementById('covName').textContent     = u.name;
+  if(document.getElementById('covMeta'))     document.getElementById('covMeta').textContent     = u.city + ' · ' + u.platform + ' · ' + u.zone;
+  if(document.getElementById('covBigNum'))   document.getElementById('covBigNum').textContent   = '₹' + u.coverage;
+  const pct = { High:0.85, Medium:0.70, Low:0.50 }[u.risk] || 0.70;
+  const setV = (id, v) => { const el=document.getElementById(id); if(el) el.textContent='₹'+Math.round(u.coverage*v); };
+  setV('covWeather', pct); setV('covAir', pct*0.82); setV('covStrike', pct*0.70); setV('covHeat', pct*0.58);
+  document.querySelectorAll('.cov-bar-fill').forEach(b => { const w=b.style.width; b.style.width='0%'; setTimeout(()=>b.style.width=w,100); });
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  s('ctBase','₹'+u.coverage); s('ctBaseWeek','₹'+(u.coverage*2));
+  s('ctPayout','₹'+u.payout); s('ctPayoutWeek','₹'+(u.payout*3));
+  s('ctPremium','₹'+u.premium); s('ctPremiumWeek','₹'+u.premium);
+  s('ctLoss','₹'+u.predictedLoss); s('ctLossWeek','₹'+(u.predictedLoss*5));
+  s('ctNet','₹'+(u.payout-u.premium));
+}
+
+/* ── POLICY TAB ── */
+function populatePolicyTab(u) {
+  const now    = new Date();
+  const issued = now.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const renews = new Date(now.getTime()+7*864e5).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const pId    = 'GG-' + u.name.toUpperCase().slice(0,3) + '-' + Math.floor(Math.random()*900000+100000);
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  s('phcName',u.name); s('phcMeta',u.city+' · '+u.platform+' · '+u.zone);
+  s('phcId','Policy ID: '+pId); s('phcIssued',issued); s('phcRenews',renews);
+  const riskEl = document.getElementById('polRisk');
+  if(riskEl){riskEl.textContent=u.risk+' Risk';riskEl.className='pdc-value '+(u.risk==='High'?'pdc-amber':u.risk==='Low'?'pdc-green':'');}
+  s('polCoverage','₹'+u.coverage); s('polPremium','₹'+u.premium+' / week');
+  s('polMaxPayout','₹'+u.payout); s('polWeeklyCap','₹'+(u.coverage*2));
+  ['Rain','Flood','Air','Strike','Heat'].forEach(t=>{s('polPay'+t,'₹'+u.payout);});
+}
+
+/* ── ZONE MAP TAB ── */
+function populateZoneMap(u) {
+  const city  = u.city;
+  const zones = ZONE_DATA[city] || ZONE_DATA.Chennai;
+  const d     = u.cityData || {};
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  s('zcbCity',city); s('mapCity',city);
+  const hi=zones.filter(z=>z.risk==='High').length;
+  const md=zones.filter(z=>z.risk==='Medium').length;
+  s('zcbHigh',hi); s('zcbMed',md); s('zcbSafe',zones.length-hi-md);
+
+  const userZone = (u.zone||'').replace(/Zone [A-Z] – /,'').toLowerCase().split(' ')[0];
+
+  // Zone cards
+  const grid = document.getElementById('zoneGrid');
+  if(grid) grid.innerHTML = zones.map(z => {
+    const cls   = z.risk==='High'?'risk-high':z.risk==='Medium'?'risk-med':'risk-low';
+    const yours = z.name.toLowerCase().startsWith(userZone);
+    return `<div class="zone-card ${cls}${yours?' zone-yours':''}">
+      ${yours?'<div class="zc-yours-tag">Your Zone</div>':''}
+      <div class="zc-name">${z.name}</div>
+      <div class="zc-risk ${z.risk.toLowerCase()}">${z.risk.toUpperCase()} RISK</div>
+      <div class="zc-stats">
+        <div class="zc-stat-row"><span>Rain Index</span><strong>${z.rain}/100</strong></div>
+        <div class="zc-stat-row"><span>Orders/hr</span><strong>${z.orders}</strong></div>
+        <div class="zc-stat-row"><span>Surge</span><strong>${z.surge}</strong></div>
+        <div class="zc-stat-row"><span>Avg Earn/hr</span><strong>${z.earn}</strong></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Map blobs
+  const mapV = document.getElementById('mapVisual');
+  if(mapV) {
+    mapV.querySelectorAll('.map-zone-blob').forEach(b=>b.remove());
+    const positions = [[22,35],[68,22],[30,68],[73,62]];
+    zones.forEach((z,i)=>{
+      const [lp,tp] = positions[i]||[50,50];
+      const yours   = z.name.toLowerCase().startsWith(userZone);
+      const bgMap   = {High:'rgba(244,63,94,.6)',Medium:'rgba(245,158,11,.6)',Low:'rgba(16,185,129,.6)'};
+      const blob    = document.createElement('div');
+      blob.className = 'map-zone-blob';
+      blob.style.cssText = `left:${lp}%;top:${tp}%;width:${yours?90:70}px;height:${yours?90:70}px;background:${bgMap[z.risk]};border-color:${bgMap[z.risk].replace('.6',1)};color:#fff;transform:translate(-50%,-50%);font-size:${yours?12:10}px;text-align:center;line-height:1.2;padding:6px;`;
+      blob.textContent = (yours?'⭐ ':'')+z.name.split(' ')[0];
+      mapV.appendChild(blob);
+    });
+  }
+
+  // Weather
+  const rain = d.rain||70; const aqi = d.aqi||142;
+  s('wcRain',rain+'/100'); s('wcAqi',aqi);
+  s('wcWind',Math.round(15+rain/10)+' km/h');
+  const tempMap={Chennai:34,Mumbai:32,Delhi:40,Bengaluru:28,Hyderabad:36,Kolkata:33,Pune:30,Ahmedabad:38};
+  s('wcTemp',(tempMap[city]||33)+'°C');
+  setTimeout(()=>{
+    const rb=document.getElementById('wcRainBar'); if(rb) rb.style.width=rain+'%';
+    const ab=document.getElementById('wcAqiBar');  if(ab) ab.style.width=Math.min(100,aqi/3.5)+'%';
+  },300);
+
+  // Routes
+  const routes = ROUTE_DATA[city]||ROUTE_DATA.default;
+  const rl = document.getElementById('routeList');
+  if(rl) rl.innerHTML = routes.map(r=>`
+    <div class="route-item">
+      <span class="ri-ico">${r.ico}</span>
+      <div class="ri-body"><div class="ri-name">${r.name}</div><div class="ri-detail">${r.detail}</div></div>
+      <span class="ri-tag ${r.tag}">${r.tag==='safe'?'✅ Safe':r.tag==='caution'?'⚡ Caution':'🚫 Avoid'}</span>
+    </div>`).join('');
+}
+
+/* ── SETTINGS TAB ── */
+function populateSettings(u) {
+  const initials = u.name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2);
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  s('settAvatar',initials); s('settName',u.name);
+  s('settMeta',u.platform+' · '+u.city);
+  s('sfCity',u.city); s('sfPlatform',u.platform);
+  s('sfZone',u.zone); s('sfEarnings','₹'+u.earnings+' / day'); s('sfHours',u.hours+' hours');
+  s('sfRisk',u.risk+' Risk');
+  const rateMap={High:'3.75%',Medium:'2.50%',Low:'1.25%'};
+  s('sfPremRate',rateMap[u.risk]||'—');
+  const upiName = u.name.toLowerCase().replace(/\s+/,'.');
+  s('sfUpi',upiName.slice(0,4)+'****@okaxis');
+}
+
+function saveToggle(key, el) {
+  showSettToast((el.checked?'✅ ':'🔕 ')+key.replace(/([A-Z])/g,' $1').trim()+(el.checked?' enabled':' disabled'));
+}
+
+function showEditToast(msg) { showSettToast(msg); }
+
+function showSettToast(msg) {
+  const t = document.getElementById('settToast');
+  if(!t) return;
+  t.textContent = msg || '✅ Changes saved';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+/* ── PAYOUT CALCULATOR ── */
+function updatePayCalc() {
+  const earnings = parseInt(document.getElementById('paySlider').value);
+  document.getElementById('sliderEarningsVal').textContent = '₹' + earnings;
+  const rates = { High:[0.0375,0.375], Medium:[0.025,0.20], Low:[0.0125,0.08] };
+  const [pRate, lRate] = rates[calcRisk];
+  document.getElementById('calcCoverage').textContent = '₹' + earnings;
+  document.getElementById('calcPremium').textContent  = '₹' + Math.round(earnings*pRate);
+  document.getElementById('calcLoss').textContent     = '₹' + Math.round(earnings*lRate);
+  document.getElementById('calcPayout').textContent   = '₹' + Math.round(earnings*0.7);
+}
+
+function setCalcRisk(risk, btn) {
+  calcRisk = risk;
+  document.querySelectorAll('.pay-risk-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updatePayCalc();
+}
+
+function selectClaimType(el, type) {
+  document.querySelectorAll('.ct-type').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  selectedClaimType = type;
+}
+
+/* ── SUBMIT CLAIM ── */
+async function submitClaim() {
+  if (weeklyClaimsCount >= 3) { alert('Maximum 3 claims per week reached. Resets Monday 6 AM.'); return; }
+  const btn     = document.getElementById('ctSubmitBtn');
+  const txtEl   = document.getElementById('ctBtnText');
+  const ldEl    = document.getElementById('ctBtnLoad');
+  const progEl  = document.getElementById('ctProgress');
+  btn.disabled  = true; txtEl.style.display='none'; ldEl.style.display='flex';
+  progEl.style.display = 'block';
+
+  const ctpSteps = [1,2,3,4].map(i=>document.getElementById('ctp'+i));
+  ctpSteps.forEach(s=>{if(s)s.className='ctp-step';});
+
+  const msgs    = SIM_MSGS[selectedClaimType]||SIM_MSGS.rain;
+  const payout  = userData ? Math.round(userData.coverage*0.7) : 560;
+
+  for(let i=0;i<4;i++){
+    const msg = i<3 ? msgs[i] : `✅ ₹${payout} credited to your UPI`;
+    await new Promise(r=>setTimeout(r,200));
+    if(ctpSteps[i]){ctpSteps[i].classList.add('active');ctpSteps[i].querySelector('.ctp-lbl').textContent=msg;}
+    await new Promise(r=>setTimeout(r,800));
+    if(ctpSteps[i]){ctpSteps[i].classList.remove('active');ctpSteps[i].classList.add('done');}
+  }
+
+  const now   = new Date();
+  const entry = { type:selectedClaimType, label:CLAIM_LABELS[selectedClaimType], date:now.toLocaleDateString('en-IN'), time:now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}), coverage:userData?userData.coverage:800, payout };
+  claimsHistory.unshift(entry);
+  weeklyClaimsCount++;
+  renderPayoutHistory();
+  updateHistoryTab();
+
+  document.getElementById('poAmount').textContent = '₹' + payout;
+  document.getElementById('payoutOverlay').classList.add('show');
+
+  setTimeout(()=>{
+    btn.disabled=false; txtEl.style.display=''; ldEl.style.display='none';
+    ctpSteps.forEach(s=>{if(s)s.className='ctp-step';});
+    progEl.style.display='none';
+  },800);
+}
+
+function renderPayoutHistory() {
+  const container = document.getElementById('phRows');
+  const total     = claimsHistory.reduce((a,c)=>a+c.payout,0);
+  const phTotal   = document.getElementById('phTotal');
+  if(phTotal) phTotal.textContent = '₹'+total;
+  if(!container) return;
+  container.innerHTML = claimsHistory.length
+    ? claimsHistory.map(c=>`<div class="ph-row"><span>${c.date}</span><span>${c.label}</span><span>₹${c.coverage}</span><span style="color:var(--emerald);font-weight:600">₹${c.payout}</span><span><span class="ph-status-ok">Credited</span></span></div>`).join('')
+    : '<div class="ph-empty">No payouts yet. Submit a claim above.</div>';
+}
+
+function updateHistoryTab() {
+  const total = claimsHistory.reduce((a,c)=>a+c.payout,0);
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  s('hsTotalClaims',claimsHistory.length);
+  s('hsTotalPaid','₹'+total);
+  s('hsThisWeek',weeklyClaimsCount);
+  s('hsRemaining',Math.max(0,3-weeklyClaimsCount));
+  const rows = document.getElementById('fullHistoryRows');
+  if(!rows) return;
+  rows.innerHTML = claimsHistory.length
+    ? claimsHistory.map(c=>`<div class="fh-row"><span>${c.label}</span><span>${c.date} · ${c.time}</span><span style="color:var(--emerald);font-weight:600">₹${c.payout}</span><span><span class="ph-status-ok">Credited</span></span></div>`).join('')
+    : '<div class="ph-empty">No claims filed yet. Go to the Payout tab.</div>';
+}
+
+/* ── FAQ ── */
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+/* ── DASHBOARD SIMULATOR ── */
+async function runSim(type) {
+  if (simRunning) return; simRunning = true;
+  const steps = [0,1,2,3].map(i=>document.getElementById('ss'+i));
+  steps.forEach(s=>{ s.className='sim-step'; s.querySelector('span:last-child').textContent=''; });
+  const msgs   = SIM_MSGS[type]||SIM_MSGS.rain;
+  const payout = userData ? Math.round(userData.coverage*0.7) : 560;
+
+  for(let i=0;i<4;i++){
+    const msg = i<3 ? msgs[i] : `✅ ₹${payout} credited to your UPI`;
+    steps[i].classList.add('active');
+    steps[i].querySelector('span:last-child').textContent = msg;
+    await new Promise(r=>setTimeout(r,900));
+    steps[i].classList.remove('active');
+    steps[i].classList.add('done');
+  }
+  document.getElementById('poAmount').textContent = '₹'+payout;
+  document.getElementById('payoutOverlay').classList.add('show');
+  simRunning = false;
+}
+
+function closePayoutPopup() {
+  document.getElementById('payoutOverlay').classList.remove('show');
+}
+
+/* ── EARNINGS CHART ── */
+function drawChart(u) {
+  const canvas = document.getElementById('earningsChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W   = canvas.parentElement.offsetWidth - 4;
+  const H   = 200;
+  canvas.width = W; canvas.height = H;
+
+  const days    = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const base    = u.earnings;
+  const factors = { High:[0.90,0.54,0.84,0.58,0.91,1.08,0.72], Medium:[1.00,0.80,0.95,0.84,1.04,1.10,0.92], Low:[1.00,1.05,1.03,0.98,1.08,1.12,1.01] };
+  const actual  = (factors[u.risk]||factors.High).map(f=>Math.round(base*f));
+  const prot    = actual.map(v=>v<base*0.78?Math.round(v+(base-v)*0.7):v);
+  const isRisk  = actual.map(v=>v<base*0.78);
+
+  const pad={l:52,r:16,t:18,b:36};
+  const gW=W-pad.l-pad.r; const gH=H-pad.t-pad.b;
+  const maxV=Math.max(...actual,...prot)*1.15;
+  const xOf=i=>pad.l+(i/(days.length-1))*gW;
+  const yOf=v=>pad.t+gH-(v/maxV)*gH;
+
+  ctx.strokeStyle='rgba(255,255,255,.05)'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t+(i/4)*gH;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();}
+
+  isRisk.forEach((r,i)=>{if(!r)return;const bw=gW/(days.length-1);ctx.fillStyle='rgba(244,63,94,.07)';ctx.fillRect(xOf(i)-bw/2,pad.t,bw,gH);});
+
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(prot[0]));prot.forEach((v,i)=>{if(i>0)ctx.lineTo(xOf(i),yOf(v));});
+  ctx.lineTo(xOf(days.length-1),pad.t+gH);ctx.lineTo(xOf(0),pad.t+gH);ctx.closePath();
+  const g2=ctx.createLinearGradient(0,pad.t,0,pad.t+gH);g2.addColorStop(0,'rgba(16,185,129,.16)');g2.addColorStop(1,'rgba(16,185,129,0)');ctx.fillStyle=g2;ctx.fill();
+
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(actual[0]));actual.forEach((v,i)=>{if(i>0)ctx.lineTo(xOf(i),yOf(v));});
+  ctx.lineTo(xOf(days.length-1),pad.t+gH);ctx.lineTo(xOf(0),pad.t+gH);ctx.closePath();
+  const g1=ctx.createLinearGradient(0,pad.t,0,pad.t+gH);g1.addColorStop(0,'rgba(67,56,202,.2)');g1.addColorStop(1,'rgba(67,56,202,0)');ctx.fillStyle=g1;ctx.fill();
+
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(prot[0]));prot.forEach((v,i)=>{if(i>0)ctx.lineTo(xOf(i),yOf(v));});
+  ctx.strokeStyle='#10b981';ctx.lineWidth=2;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
+
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(actual[0]));actual.forEach((v,i)=>{if(i>0)ctx.lineTo(xOf(i),yOf(v));});
+  ctx.strokeStyle='#4338ca';ctx.lineWidth=2.5;ctx.stroke();
+
+  actual.forEach((v,i)=>{
+    ctx.beginPath();ctx.arc(xOf(i),yOf(v),isRisk[i]?6:4,0,Math.PI*2);
+    ctx.fillStyle=isRisk[i]?'#f43f5e':'#4338ca';ctx.fill();
+    if(isRisk[i]){ctx.beginPath();ctx.arc(xOf(i),yOf(v),11,0,Math.PI*2);ctx.strokeStyle='rgba(244,63,94,.3)';ctx.lineWidth=1.5;ctx.stroke();}
+  });
+
+  ctx.fillStyle='rgba(232,234,246,.35)';ctx.font='11px Figtree,sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=3;i++){const v=Math.round((maxV/3)*i);ctx.fillText('₹'+v,pad.l-8,yOf(v)+4);}
+  ctx.textAlign='center';ctx.font='12px Figtree,sans-serif';
+  days.forEach((d,i)=>ctx.fillText(d,xOf(i),H-8));
+}
+
+window.addEventListener('resize',()=>{ if(userData) drawChart(userData); });
+</script>
+</body>
+</html>
