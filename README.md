@@ -41,3 +41,18 @@ At present, there is **no structured insurance solution addressing short-term in
 
 
 ## Our Solution - GigGuard AI
+GigGuard is an AI-powered parametric insurance platform that protects gig delivery workers from **income loss caused by external disruptions** like rain, pollution, or extreme heat.
+
+It predicts risks in advance, offers affordable **weekly insurance plans**, and automatically triggers **instant payouts** when disruptions occur — without any manual claims.
+
+---
+
+## ⚙️ Core Workflow
+
+User Registration →  
+AI Risk Prediction →  
+Weekly Premium Calculation →  
+Coverage Activation →  
+Disruption Detection →  
+Automatic Claim Trigger →  
+Instant Payout
