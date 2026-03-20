@@ -60,12 +60,13 @@ Workers enroll in a **weekly micro-insurance plan that protects their income** w
 
 GigGuard focuses on **gig delivery workers** who depend on daily earnings and are highly affected by external disruptions.
 
-### 🎯 Who We Target
+**🎯 Who We Target**
 - Food delivery riders  
 - Grocery delivery partners  
 - Multi-platform gig workers
   
 **📱 Platforms Covered**
+
 GigGuard is designed for workers from:
 
 - Swiggy  
