@@ -20,6 +20,7 @@ Gig delivery workers rely on daily work for income, making them highly vulnerabl
 
 GigGuard AI aims to **solve this gap** with an AI-powered, automated income protection system.
 
+
 ## Real Example
 ### Scenario : High Pollution (AQI Spike)
 
