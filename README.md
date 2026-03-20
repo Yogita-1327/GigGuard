@@ -4,6 +4,7 @@ https://yogita-1327.github.io/GigGuard/
 
 ## AI-Powered Income Protection for Gig Delivery Workers
 
+---
 
 ## Problem Statement
 Gig delivery workers rely on daily work for income, making them highly vulnerable to sudden disruptions. Events like heavy rain, heat waves, pollution, curfews, and app downtime can reduce their working hours and cause immediate income loss.
@@ -39,6 +40,8 @@ A Zomato delivery partner in Delhi faces **AQI levels above 300**.
 If this happens multiple times per month, workers may lose **20–30%** of their income.
 At present, there is **no structured insurance solution addressing short-term income loss faced by gig workers** due to external disruptions.
 
+---
+
 
 ## Our Solution - GigGuard AI
 GigGuard is an AI-powered parametric insurance platform that protects gig delivery workers from **income loss caused by external disruptions** like rain, pollution, or extreme heat.
@@ -50,3 +53,4 @@ It predicts risks in advance, offers affordable **weekly insurance plans**, and 
 Risk prediction → Weekly coverage → Disruption detected → Automatic claim → Instant payout
 Workers enroll in a **weekly micro-insurance plan that protects their income** when disruption conditions are detected.
 
+---
