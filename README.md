@@ -177,7 +177,7 @@ This model ensures **affordable pricing, dynamic coverage, and instant compensat
 ### Risk Scoring
 - Calculates risk based on weather and environment  
 - Assigns score (Low / Medium / High)
-- 
+  
 ### Dynamic Premium
 - Adjusts weekly premium based on risk  
 - Ensures fair and affordable pricing  
@@ -189,3 +189,21 @@ This model ensures **affordable pricing, dynamic coverage, and instant compensat
 Makes the system smart, adaptive, and reliable.
 
 ---
+
+## 🧰 Tech Stack
+
+| Component        | Technology Used              |
+|-----------------|------------------------------|
+| Frontend        | HTML, CSS, JavaScript        |
+| UI Design       | Custom CSS (Glassmorphism, Animations) |
+| Backend         | Node.js (Planned)            |
+| Data Handling   | Mock Data (Weather, AQI)     |
+| AI Logic        | Rule-based Risk Calculation  |
+| Deployment      | GitHub Pages                 |
+| Version Control | Git & GitHub                |
+
+---
+
+## System Architecture
+
+<img width="993" height="718" alt="image" src="https://github.com/user-attachments/assets/5e34cf46-ee74-4035-ba69-50c169d80aa8" />
