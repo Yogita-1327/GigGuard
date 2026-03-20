@@ -206,40 +206,4 @@ Makes the system smart, adaptive, and reliable.
 
 ## System Architecture
 
-                +----------------------+
-                |   Worker Application |
-                +----------+-----------+
-                           |
-                           v
-                +----------------------+
-                |      Backend API     |
-                | Policy & Claim Logic |
-                +----------+-----------+
-                           |
-           +---------------+----------------+
-           |                                |
-           v                                v
-+--------------------+            +--------------------+
-|   AI Risk Engine   |            | Fraud Detection AI |
-| Risk Score Model   |            | Anomaly Detection  |
-+---------+----------+            +---------+----------+
-          |                                 |
-          +-------------+-------------------+
-                        |
-                        v
-             +----------------------+
-             | Disruption Detection |
-             | Weather / Traffic   |
-             +----------+-----------+
-                        |
-                        v
-             +----------------------+
-             |   Parametric Trigger |
-             | Claim Automation     |
-             +----------+-----------+
-                        |
-                        v
-             +----------------------+
-             |  Payment Simulation  |
-             |   Instant Payout     |
-             +----------------------+
+
