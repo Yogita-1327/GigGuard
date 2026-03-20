@@ -55,3 +55,45 @@ Risk prediction → Weekly coverage → Disruption detected → Automatic claim 
 Workers enroll in a **weekly micro-insurance plan that protects their income** when disruption conditions are detected.
 
 ---
+
+## 👤 Target Persona
+
+GigGuard focuses on **gig delivery workers** who depend on daily earnings and are highly affected by external disruptions.
+
+### 🎯 Who We Target
+- Food delivery riders  
+- Grocery delivery partners  
+- Multi-platform gig workers
+  
+**📱 Platforms Covered**
+GigGuard is designed for workers from:
+
+- Swiggy  
+- Zomato  
+- Blinkit  
+- Dunzo  
+- Zepto  
+
+**❗ Why This Segment is Important**
+
+- Workers depend on **daily income for survival**  
+- Earnings are **directly impacted by weather and disruptions**  
+- No existing solution protects **short-term income loss**  
+- High exposure to **outdoor risks (rain, heat, pollution)**  
+- Large and growing workforce in India’s gig economy  
+
+👉 Even a few hours of disruption can lead to **significant income loss**
+
+### 📊 Example Worker Profile
+
+| Attribute        | Value            |
+|-----------------|------------------|
+| Platform        | Zepto            |
+| City            | Chennai          |
+| Daily Earnings  | ₹700–₹900        |
+| Working Hours   | 8–10 hours/day   |
+| Major Risk      | Rain & flooding  |
+
+👉 This worker is highly vulnerable to disruptions, making them an ideal user for GigGuard’s income protection system.
+
+---
