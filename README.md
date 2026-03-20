@@ -131,4 +131,6 @@ When these conditions are met, the system assumes income loss and triggers **ins
 | 🚧 Road Blockages  | Traffic / route disruptions | Delivery delays, fewer trips   | Auto claim triggered |
 
 👉 These triggers ensure that payouts are **fast, transparent, and based on real-world conditions**, eliminating the need for manual claim verification.
+
+
 ---
