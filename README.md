@@ -98,3 +98,6 @@ GigGuard is designed for workers from:
 👉 This worker is highly vulnerable to disruptions, making them an ideal user for GigGuard’s income protection system.
 
 ---
+## Core Innovations
+
+
