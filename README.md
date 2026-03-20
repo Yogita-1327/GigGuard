@@ -4,7 +4,7 @@ https://yogita-1327.github.io/GigGuard/
 
 ## AI-Powered Income Protection for Gig Delivery Workers
 
----
+
 
 ## Problem Statement
 Gig delivery workers rely on daily work for income, making them highly vulnerable to sudden disruptions. Events like heavy rain, heat waves, pollution, curfews, and app downtime can reduce their working hours and cause immediate income loss.
@@ -50,7 +50,8 @@ It predicts risks in advance, offers affordable **weekly insurance plans**, and 
 
 **⚙️ Core Idea**
 
-Risk prediction → Weekly coverage → Disruption detected → Automatic claim → Instant payout
+Risk prediction → Weekly coverage → Disruption detected → Automatic claim → Instant payout.
+
 Workers enroll in a **weekly micro-insurance plan that protects their income** when disruption conditions are detected.
 
 ---
