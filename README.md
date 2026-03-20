@@ -7,7 +7,7 @@ https://yogita-1327.github.io/GigGuard/
 ## Problem Statement
 Gig delivery workers rely on daily work for income, making them highly vulnerable to sudden disruptions. Events like heavy rain, heat waves, pollution, curfews, and app downtime can reduce their working hours and cause immediate income loss.
 
-Key challenges include:
+**Key challenges include:**
 
 - No insurance focused on income disruption
 
@@ -17,4 +17,4 @@ Key challenges include:
 
 - Delayed or complicated claim processes
 
-GigGuard aims to solve this gap with an AI-powered, automated income protection system.
+GigGuard aims to **solve this gap** with an AI-powered, automated income protection system.
