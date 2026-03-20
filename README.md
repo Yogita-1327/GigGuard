@@ -27,12 +27,12 @@ GigGuard AI aims to **solve this gap** with an AI-powered, automated income prot
 
 A Zomato delivery partner in Delhi faces **AQI levels above 300**.
 
-During high pollution:
+**During high pollution:**
 - Reduced outdoor activity  
 - Lower order demand  
 - Health-related breaks  
 
-👉 Result:
+**👉 Result:**
 - Loss of **2–3 working hours**
 - Daily income drop of **₹200–₹400**
   
@@ -47,12 +47,6 @@ It predicts risks in advance, offers affordable **weekly insurance plans**, and 
 
 ---
 
-## ⚙️ Core Workflow
+### ⚙️ Core Idea
 
-User Registration →  
-AI Risk Prediction →  
-Weekly Premium Calculation →  
-Coverage Activation →  
-Disruption Detection →  
-Automatic Claim Trigger →  
-Instant Payout
+Risk prediction → Weekly coverage → Disruption detected → Automatic claim → Instant payout
