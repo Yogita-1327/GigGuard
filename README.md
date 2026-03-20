@@ -2,7 +2,6 @@
 https://yogita-1327.github.io/GigGuard/
 # GigGuard AI
 
-
 ## AI-Powered Income Protection for Gig Delivery Workers
 ---
 
