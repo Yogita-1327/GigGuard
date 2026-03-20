@@ -134,3 +134,27 @@ When these conditions are met, the system assumes income loss and triggers **ins
 
 
 ---
+
+## 💰 Weekly Pricing Model
+
+GigGuard uses **weekly micro-insurance**, matching gig workers’ income cycles.
+
+### Example Plans:
+
+| Component            | Low Risk        | Medium Risk     | High Risk       |
+|---------------------|----------------|----------------|----------------|
+| Weekly Premium      | ₹10            | ₹20            | ₹30            |
+| Max Weekly Coverage | ₹300           | ₹500           | ₹800           |
+| Estimated Payout    | ₹210           | ₹350           | ₹560           |
+| Trigger Condition   | External disruptions (rain, AQI, heat, etc.) |
+
+### Premium depends on:
+
+- City risk level  
+- Disruption frequency  
+- Environmental conditions  
+- Working hours & earnings  
+
+👉 This model ensures **affordable pricing, dynamic coverage, and instant compensation** for gig workers.
+
+---
