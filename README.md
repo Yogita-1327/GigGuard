@@ -85,7 +85,7 @@ GigGuard is designed for workers from:
 
 👉 Even a few hours of disruption can lead to **significant income loss**
 
-### 📊 Example Worker Profile
+**📊 Example Worker Profile**
 
 | Attribute        | Value            |
 |-----------------|------------------|
@@ -120,17 +120,17 @@ GigGuard dynamically adjusts risk, premium, and payout based on changing real-wo
 GigGuard uses predefined environmental thresholds (parametric triggers) to automatically detect disruptions and initiate payouts.  
 When these conditions are met, the system assumes income loss and triggers **instant compensation without manual claims**.
 
-### 📊 Trigger Conditions
+**📊 Trigger Conditions**
 
 | Trigger Type        | Condition / Threshold        | Impact on Workers              | Action Taken |
 |--------------------|-----------------------------|--------------------------------|--------------|
-| 🌧️ Heavy Rainfall  | Rainfall > 60 mm            | Reduced orders, delivery delays| Auto claim triggered |
-| 🌫️ High Pollution  | AQI > 300                   | Health risks, fewer orders     | Auto claim triggered |
-| 🌡️ Extreme Heat    | Temperature > 42°C          | Reduced working hours          | Auto claim triggered |
-| 🚫 Curfew / Lockdown | Government restriction     | No delivery operations         | Auto claim triggered |
-| 🚧 Road Blockages  | Traffic / route disruptions | Delivery delays, fewer trips   | Auto claim triggered |
+| Heavy Rainfall  | Rainfall > 60 mm            | Reduced orders, delivery delays| Auto claim triggered |
+| High Pollution  | AQI > 300                   | Health risks, fewer orders     | Auto claim triggered |
+| Extreme Heat    | Temperature > 42°C          | Reduced working hours          | Auto claim triggered |
+| Curfew / Lockdown | Government restriction     | No delivery operations         | Auto claim triggered |
+| Road Blockages  | Traffic / route disruptions | Delivery delays, fewer trips   | Auto claim triggered |
 
-👉 These triggers ensure that payouts are **fast, transparent, and based on real-world conditions**, eliminating the need for manual claim verification.
+These triggers ensure that payouts are **fast, transparent, and based on real-world conditions**, eliminating the need for manual claim verification.
 
 
 ---
@@ -139,7 +139,7 @@ When these conditions are met, the system assumes income loss and triggers **ins
 
 GigGuard uses **weekly micro-insurance**, matching gig workers’ income cycles.
 
-### Example Plans:
+**Example Plans:**
 
 | Component            | Low Risk        | Medium Risk     | High Risk       |
 |---------------------|----------------|----------------|----------------|
@@ -148,13 +148,44 @@ GigGuard uses **weekly micro-insurance**, matching gig workers’ income cycles.
 | Estimated Payout    | ₹210           | ₹350           | ₹560           |
 | Trigger Condition   | External disruptions (rain, AQI, heat, etc.) |
 
-### Premium depends on:
+**Premium depends on:**
 
 - City risk level  
 - Disruption frequency  
 - Environmental conditions  
 - Working hours & earnings  
 
-👉 This model ensures **affordable pricing, dynamic coverage, and instant compensation** for gig workers.
+This model ensures **affordable pricing, dynamic coverage, and instant compensation** for gig workers.
+
+---
+## System Workflow
+
+1. User enters details (city, platform, earnings, working hours)
+2. GigGuard analyzes environmental risk factors (rain, AQI, heat)
+3. System calculates risk level (Low / Medium / High)
+4. Weekly premium and coverage plan are generated
+5. Worker subscribes to protection plan
+6. System monitors real-time disruption conditions
+7. Disruption threshold is detected (parametric trigger)
+8. Claim is automatically triggered (no manual process)
+9. Instant payout is credited to the worker
+
+
+---
+## AI Integration
+
+### Risk Scoring
+- Calculates risk based on weather and environment  
+- Assigns score (Low / Medium / High)
+- 
+### Dynamic Premium
+- Adjusts weekly premium based on risk  
+- Ensures fair and affordable pricing  
+
+### Fraud Detection
+- Detects unusual claim patterns  
+- Prevents false or repeated claims
+  
+Makes the system smart, adaptive, and reliable.
 
 ---
