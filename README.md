@@ -98,6 +98,20 @@ GigGuard is designed for workers from:
 👉 This worker is highly vulnerable to disruptions, making them an ideal user for GigGuard’s income protection system.
 
 ---
-## Core Innovations
+## 🚀 Core Innovations
 
+### 1. 🔍 AI-Powered Income Risk Prediction with Dynamic Range
+- GigGuard predicts **income loss before it happens** by analyzing environmental factors such as rain, pollution, and heat.  
+- It uses a **dynamic risk range model** that adjusts risk levels and expected income loss based on real-time conditions, enabling **accurate and personalized protection**.
 
+### 2. 💰 Weekly Parametric Micro-Insurance Model
+- GigGuard introduces a **low-cost weekly insurance plan** tailored to gig workers’ earning cycles.  
+- Premium and coverage are dynamically adjusted based on risk level, ensuring **affordable and flexible protection**.
+
+### 3. ⚡ Instant Automated Payout System
+- GigGuard uses **parametric triggers** to automatically detect disruptions and process claims.  
+- Once thresholds are met, payouts are credited instantly — ensuring **zero paperwork and no waiting time**.
+
+GigGuard dynamically adjusts risk, premium, and payout based on changing real-world conditions.
+
+---
