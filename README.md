@@ -205,42 +205,56 @@ Makes the system smart, adaptive, and reliable.
 ---
 
 ## System Architecture
+                +----------------------+
+                |   Worker Application |
+                +----------+-----------+
+                           |
+                           v
+                +----------------------+
+                |      Backend API     |
+                | Policy & Claim Logic |
+                +----------+-----------+
+                           |
+           +---------------+----------------+
+           |                                |
+           v                                v
+    +--------------------+            +--------------------+
+    |   AI Risk Engine   |            | Fraud Detection AI |
+    | Risk Score Model   |            | Anomaly Detection  |
+    +---------+----------+            +---------+----------+
+          |                                 |
+          +-------------+-------------------+
+                        |
+                        v
+             +----------------------+
+             | Disruption Detection |
+             | Weather / Traffic   |
+             +----------+-----------+
+                        |
+                        v
+             +----------------------+
+             |   Parametric Trigger |
+             | Claim Automation     |
+             +----------+-----------+
+                        |
+                        v
+             +----------------------+
+             |  Payment Simulation  |
+             |   Instant Payout     |
+             +----------------------+
 
-+------------------------+
-| Worker Application |
-+------------------------+
-|
-v
-+------------------------+
-| Backend API |
-| Policy & Claim Logic |
-+------------------------+
-|
-+------------------------+------------------------+
-| |
-v v
-+------------------------+ +------------------------+
-| AI Risk Engine | | Fraud Detection AI |
-| Risk Score Model | | Anomaly Detection |
-+------------------------+ +------------------------+
-| |
-+--------------+-----------------+
-|
-v
-+------------------------+
-| Disruption Detection |
-| Weather / Traffic |
-+------------------------+
-|
-v
-+------------------------+
-| Parametric Trigger |
-| Claim Automation |
-+------------------------+
-|
-v
-+------------------------+
-| Payment Simulation |
-| Instant Payout |
-+------------------------+
 
+---
+## Why GigGuard AI Matters?
+
+-  Gig workers depend on **daily income with no financial safety net**  
+-  External disruptions can **instantly reduce earnings**  
+-  Even a few hours of downtime leads to **significant income loss**  
+-  No existing solution protects **short-term income disruption**  
+-  GigGuard ensures **instant financial support when needed most**  
+-  AI enables **predictive protection, not just reactive compensation**  
+-  Supports stability in India’s **growing gig economy**
+
+GigGuard transforms uncertainty into financial security for gig workers.
+
+---
