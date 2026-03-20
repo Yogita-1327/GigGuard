@@ -115,3 +115,20 @@ GigGuard is designed for workers from:
 GigGuard dynamically adjusts risk, premium, and payout based on changing real-world conditions.
 
 ---
+## ⚡ Parametric Triggers
+
+GigGuard uses predefined environmental thresholds (parametric triggers) to automatically detect disruptions and initiate payouts.  
+When these conditions are met, the system assumes income loss and triggers **instant compensation without manual claims**.
+
+### 📊 Trigger Conditions
+
+| Trigger Type        | Condition / Threshold        | Impact on Workers              | Action Taken |
+|--------------------|-----------------------------|--------------------------------|--------------|
+| 🌧️ Heavy Rainfall  | Rainfall > 60 mm            | Reduced orders, delivery delays| Auto claim triggered |
+| 🌫️ High Pollution  | AQI > 300                   | Health risks, fewer orders     | Auto claim triggered |
+| 🌡️ Extreme Heat    | Temperature > 42°C          | Reduced working hours          | Auto claim triggered |
+| 🚫 Curfew / Lockdown | Government restriction     | No delivery operations         | Auto claim triggered |
+| 🚧 Road Blockages  | Traffic / route disruptions | Delivery delays, fewer trips   | Auto claim triggered |
+
+👉 These triggers ensure that payouts are **fast, transparent, and based on real-world conditions**, eliminating the need for manual claim verification.
+---
